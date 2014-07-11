@@ -35,6 +35,7 @@
             this.buttonFusekiRestart = new System.Windows.Forms.Button();
             this.buttonOk = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
+            this.checkBoxShowFusekiConsole = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownFusekiPort)).BeginInit();
             this.SuspendLayout();
             // 
@@ -104,11 +105,22 @@
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
+            // checkBoxShowFusekiConsole
+            // 
+            this.checkBoxShowFusekiConsole.AutoSize = true;
+            this.checkBoxShowFusekiConsole.Location = new System.Drawing.Point(298, 63);
+            this.checkBoxShowFusekiConsole.Name = "checkBoxShowFusekiConsole";
+            this.checkBoxShowFusekiConsole.Size = new System.Drawing.Size(148, 16);
+            this.checkBoxShowFusekiConsole.TabIndex = 6;
+            this.checkBoxShowFusekiConsole.Text = "Show Fuseki Console";
+            this.checkBoxShowFusekiConsole.UseVisualStyleBackColor = true;
+            // 
             // Preference
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(485, 139);
+            this.Controls.Add(this.checkBoxShowFusekiConsole);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonOk);
             this.Controls.Add(this.buttonFusekiRestart);
@@ -138,5 +150,6 @@
         private System.Windows.Forms.Button buttonFusekiRestart;
         private System.Windows.Forms.Button buttonOk;
         private System.Windows.Forms.Button buttonCancel;
+        private System.Windows.Forms.CheckBox checkBoxShowFusekiConsole;
     }
 }

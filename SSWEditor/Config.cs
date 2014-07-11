@@ -28,6 +28,13 @@ namespace SSWEditor
             }
         }
 
+        private bool showFusekiConsole = false;
+        public bool ShowFusekiConsole
+        {
+            get { return showFusekiConsole; }
+            set { showFusekiConsole = value; }
+        }
+
         public static string GetRandomString(int length)
         {
             RNGCryptoServiceProvider rand = new RNGCryptoServiceProvider();
