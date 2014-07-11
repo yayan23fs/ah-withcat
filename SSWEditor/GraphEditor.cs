@@ -269,6 +269,8 @@ namespace SSWEditor
             string filePath = string.Format(@"{0}\{1}.xml", MainForm.documentRoot, graphBase64);
             File.WriteAllText(filePath, textBoxTextEditor.Text);
             MainForm.fuseki.SaveGraph(g);
+
+            MessageBox.Show("graph is saved");
         }
 
         private void textBoxTextEditor_TextChanged(object sender, TextChangedEventArgs e)

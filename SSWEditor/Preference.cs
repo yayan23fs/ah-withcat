@@ -53,7 +53,7 @@ namespace SSWEditor
                 MessageBox.Show(ex.ToString());
                 return;
             }
-            if (MainForm.config.ShowFusekiConsole == false)
+            if (!checkBoxShowFusekiConsole.Checked)
             {
                 MessageBox.Show("restarted");
             }
