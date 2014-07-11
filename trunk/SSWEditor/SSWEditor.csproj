@@ -134,14 +134,14 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Content Include="external_bin\dotNetRDF.dll" />
-    <Content Include="external_bin\dotNetRDF.pdb" />
-    <Content Include="external_bin\dotNetRDF.xml" />
-    <Content Include="external_bin\FastColoredTextBox.dll" />
-    <Content Include="external_bin\FastColoredTextBox.xml" />
-    <Content Include="external_bin\HtmlAgilityPack.dll" />
-    <Content Include="external_bin\Newtonsoft.Json.dll" />
-    <Content Include="external_bin\VDS.Common.dll" />
+    <None Include="external_bin\dotNetRDF.dll" />
+    <None Include="external_bin\dotNetRDF.pdb" />
+    <None Include="external_bin\dotNetRDF.xml" />
+    <None Include="external_bin\FastColoredTextBox.dll" />
+    <None Include="external_bin\FastColoredTextBox.xml" />
+    <None Include="external_bin\HtmlAgilityPack.dll" />
+    <None Include="external_bin\Newtonsoft.Json.dll" />
+    <None Include="external_bin\VDS.Common.dll" />
     <Content Include="history.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
