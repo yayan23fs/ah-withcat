@@ -21,10 +21,14 @@ namespace SSWEditor
             arguments.Add("--pages fuseki/pages");
             arguments.Add("--loc \"" + MainForm.documentRoot + "\"");
             arguments.Add("/ds");
+
+            bool useShellExecute = false;
+            if (MainForm.config.ShowFusekiConsole == true) useShellExecute = true;
+
             var processInfo = new ProcessStartInfo("java.exe", string.Join(" ", arguments))
                                   {
                                       CreateNoWindow = true,
-                                      UseShellExecute = false
+                                      UseShellExecute = useShellExecute
                                   };
             Process proc = Process.Start(processInfo);
             if (proc == null)
