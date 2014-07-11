@@ -46,7 +46,7 @@ namespace SSWEditor
         {
             try
             {
-                Fuseki.Start();
+                Fuseki.Start(checkBoxShowFusekiConsole.Checked);
             }
             catch (Exception ex)
             {

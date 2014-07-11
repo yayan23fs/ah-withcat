@@ -44,7 +44,7 @@ namespace SSWEditor
             }
 
             LoadConfig();
-            Fuseki.Start();
+            Fuseki.Start(MainForm.config.ShowFusekiConsole);
 
             try
             {
