@@ -203,7 +203,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\config.ttl" />
     <Content Include="domain-128.png" />
     <Content Include="fuseki\fuseki-server.jar">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -252,28 +251,7 @@
     </Content>
     <Content Include="outline-512.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <PublishFile Include="HtmlAgilityPack">
-      <Visible>False</Visible>
-      <Group>
-      </Group>
-      <TargetPath>
-      </TargetPath>
-      <PublishState>Exclude</PublishState>
-      <IncludeHash>True</IncludeHash>
-      <FileType>Assembly</FileType>
-    </PublishFile>
-    <PublishFile Include="Newtonsoft.Json">
-      <Visible>False</Visible>
-      <Group>
-      </Group>
-      <TargetPath>
-      </TargetPath>
-      <PublishState>Exclude</PublishState>
-      <IncludeHash>True</IncludeHash>
-      <FileType>Assembly</FileType>
-    </PublishFile>
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
       <Visible>False</Visible>
