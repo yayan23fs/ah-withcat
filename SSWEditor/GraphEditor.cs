@@ -15,6 +15,7 @@ using System.IO;
 using VDS.RDF.Writing;
 using FastColoredTextBoxNS;
 using System.Text.RegularExpressions;
+using VDS.RDF.Query;
 
 namespace SSWEditor
 {
@@ -48,6 +49,7 @@ namespace SSWEditor
             MainForm.fuseki.LoadGraph(g, loadUri);
             graphBase64 = Base64Encode(uri);
 
+
             editingContent = EditingContent.updating;
             ShowTextEditor();
             ShowTupleEditor();
@@ -79,6 +81,7 @@ namespace SSWEditor
             }
             string relFinderUrl = "http://localhost:3030/RelFinder.swf?" + string.Join("&", encodedArgs);
             webBrowserRelfinder.Navigate(relFinderUrl);
+            textBoxGraphUri.Text = graphUri;
         }
 
         public static string Base64Encode(string plainText)
@@ -332,34 +335,23 @@ namespace SSWEditor
             char[] rowSplitter = { '\r', '\n' };
             char[] columnSplitter = { '\t' };
 
-            // Get the text from clipboard
             IDataObject dataInClipboard = Clipboard.GetDataObject();
             string stringInClipboard = (string)dataInClipboard.GetData(DataFormats.Text);
-
-            // Split it into lines
             string[] rowsInClipboard = stringInClipboard.Split(rowSplitter, StringSplitOptions.RemoveEmptyEntries);
 
-            // Get the row and column of selected cell in grid
             int r = grid.SelectedCells[0].RowIndex;
             int c = grid.SelectedCells[0].ColumnIndex;
 
-            // Add rows into grid to fit clipboard lines
             if (grid.Rows.Count < (r + rowsInClipboard.Length))
             {
                 grid.Rows.Add(r + rowsInClipboard.Length - grid.Rows.Count);
             }
 
-            // Loop through the lines, split them into cells and place the values in the corresponding cell.
             for (int iRow = 0; iRow < rowsInClipboard.Length; iRow++)
             {
-                // Split row into cell values
                 string[] valuesInRow = rowsInClipboard[iRow].Split(columnSplitter);
-
-                // Cycle through cell values
                 for (int iCol = 0; iCol < valuesInRow.Length; iCol++)
                 {
-
-                    // Assign cell value, only if it within columns of the grid
                     if (grid.ColumnCount - 1 >= c + iCol)
                     {
                         DataGridViewCell cell = grid.Rows[r + iRow].Cells[c + iCol];
@@ -371,6 +363,57 @@ namespace SSWEditor
                     }
                 }
             }
+        }
+
+        private void buttonQuery_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Object results = g.ExecuteQuery(textBoxQuery.Text);
+                if (results is SparqlResultSet)
+                {
+                    Dictionary<string,int> keyIdxMap = new Dictionary<string,int>();
+                    SparqlResultSet rset = (SparqlResultSet)results;
+                    int idx =0;
+                    foreach (SparqlResult result in rset)
+                    {
+                        foreach (var cell in result)
+                        {
+                            if ( !keyIdxMap.ContainsKey(cell.Key) ) keyIdxMap[cell.Key] = idx++;
+                        }
+                        break;
+                    }
+
+                    dataGridViewSPARQL.Columns.Clear();
+                    dataGridViewSPARQL.ColumnCount = keyIdxMap.Keys.Count;
+                    for (int i = 0; i < keyIdxMap.Keys.Count; i++)
+                    {
+                        dataGridViewSPARQL.Columns[i].Name = keyIdxMap.Keys.ToArray()[i];
+                    }
+
+                    dataGridViewSPARQL.Rows.Clear();
+                    foreach (SparqlResult result in rset)
+                    {
+                        string[] row = new string[keyIdxMap.Keys.Count];
+                        foreach (var cell in result)
+                        {
+                            int kidx = keyIdxMap[cell.Key];
+                            row[kidx] = cell.Value.ToString();
+                        }
+                        dataGridViewSPARQL.Rows.Add(row.ToArray());
+                    }
+                }
+            }
+            catch
+            {
+                MessageBox.Show("invalid query");
+                return;
+            }
+        }
+
+        private void buttonChangeGraphUri_Click(object sender, EventArgs e)
+        {
+
         }
 
     }
