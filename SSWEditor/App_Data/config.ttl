@@ -1,0 +1,21 @@
+﻿@prefix dnr: <http://www.dotnetrdf.org/configuration#> .
+
+# Firstly note that our Handler must have a subject which is a special dotNetRDF URI as discussed in Configuration API - HTTP Handlers
+<dotnetrdf:/sparql> a dnr:HttpHandler ;
+  dnr:type "VDS.RDF.Web.QueryHandler" ; # States that we're using the QueryHandler
+  dnr:queryProcessor _:proc .
+
+# Now we must define our query processor, we want to use the in-memory Leviathan SPARQL Engine
+_:proc a dnr:SparqlQueryProcessor ;
+  dnr:type "VDS.RDF.Query.LeviathanQueryProcessor" ;
+  dnr:usingStore _:store .
+
+# Now we define the initial dataset
+_:store a dnr:TripleStore ;
+  dnr:type "VDS.RDF.WebDemandTripleStore" ; # The WebDemandTripleStore can dynamically load Graphs from the web as required
+  dnr:usingGraph _:initGraph .
+
+# This defines out initial Graph which comes from a file in our App_Data directory
+_:initGraph a dnr:Graph ;
+  dnr:type "VDS.RDF.Graph" ;
+  dnr:fromFile "~/example.ttl" .
