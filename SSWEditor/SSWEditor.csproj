@@ -23,8 +23,8 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>0.0.1.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -68,17 +68,19 @@
   <ItemGroup>
     <Reference Include="dotNetRDF, Version=1.0.3.0, Culture=neutral, PublicKeyToken=6055ffe4c97cc780, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Searches\Desktop\featured\dotnetrdf_library_105_stable\Core\net40-client\dotNetRDF.dll</HintPath>
+      <HintPath>external_bin\dotNetRDF.dll</HintPath>
     </Reference>
-    <Reference Include="FastColoredTextBox">
-      <HintPath>..\..\..\..\Searches\Desktop\featured\FastColoredTextBox\Binary\FastColoredTextBox.dll</HintPath>
+    <Reference Include="FastColoredTextBox, Version=2.14.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>external_bin\FastColoredTextBox.dll</HintPath>
     </Reference>
     <Reference Include="HtmlAgilityPack, Version=1.4.6.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Searches\Desktop\featured\dotnetrdf_library_105_stable\Core\net40-client\HtmlAgilityPack.dll</HintPath>
+      <HintPath>external_bin\HtmlAgilityPack.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\..\Searches\Desktop\featured\dotnetrdf_library_105_stable\Core\net40-client\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>external_bin\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -92,8 +94,9 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="VDS.Common">
-      <HintPath>..\..\..\..\Searches\Desktop\featured\dotnetrdf_library_105_stable\Core\net40-client\VDS.Common.dll</HintPath>
+    <Reference Include="VDS.Common, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ab5f4eb908061bf0, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>external_bin\VDS.Common.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -131,6 +134,14 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="external_bin\dotNetRDF.dll" />
+    <Content Include="external_bin\dotNetRDF.pdb" />
+    <Content Include="external_bin\dotNetRDF.xml" />
+    <Content Include="external_bin\FastColoredTextBox.dll" />
+    <Content Include="external_bin\FastColoredTextBox.xml" />
+    <Content Include="external_bin\HtmlAgilityPack.dll" />
+    <Content Include="external_bin\Newtonsoft.Json.dll" />
+    <Content Include="external_bin\VDS.Common.dll" />
     <Content Include="history.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
