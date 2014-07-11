@@ -10,7 +10,7 @@ namespace SSWEditor
 {
     class Fuseki
     {
-        public static void Start()
+        public static void Start(bool showFusekiConsole)
         {
             Stop();
             List<string> arguments = new List<string>();
@@ -22,13 +22,10 @@ namespace SSWEditor
             arguments.Add("--loc \"" + MainForm.documentRoot + "\"");
             arguments.Add("/ds");
 
-            bool useShellExecute = false;
-            if (MainForm.config.ShowFusekiConsole == true) useShellExecute = true;
-
             var processInfo = new ProcessStartInfo("java.exe", string.Join(" ", arguments))
                                   {
                                       CreateNoWindow = true,
-                                      UseShellExecute = useShellExecute
+                                      UseShellExecute = showFusekiConsole
                                   };
             Process proc = Process.Start(processInfo);
             if (proc == null)
