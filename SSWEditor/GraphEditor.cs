@@ -13,29 +13,34 @@ using VDS.RDF.Parsing;
 using VDS.RDF.Storage;
 using System.IO;
 using VDS.RDF.Writing;
-using FastColoredTextBoxNS;
 using System.Text.RegularExpressions;
 using VDS.RDF.Query;
 
 namespace SSWEditor
 {
+    /// <summary>
+    /// 
+    /// Reference
+    /// http://www.codeproject.com/Articles/161871/Fast-Colored-TextBox-for-syntax-highlighting
+    /// </summary>
     public partial class GraphEditor : UserControl
     {
         public string graphUri;
         public string graphBase64;
         public Graph g = new Graph();
 
-        private enum EditingContent { updating, none, text, tuple, table };
+        private enum EditingContent { updating, none, text, turtle, table };
         private EditingContent editingContent = EditingContent.none;
 
         public GraphEditor()
         {
             InitializeComponent();
+
         }
 
         public void SetGraph(string uri)
         {
-            string loadUri = ""; 
+            string loadUri = "";
             if (uri == "default")
             {
                 loadUri = "";
@@ -52,7 +57,7 @@ namespace SSWEditor
 
             editingContent = EditingContent.updating;
             ShowTextEditor();
-            ShowTupleEditor();
+            ShowTurtleEditor();
             ShowTableEditor();
             editingContent = EditingContent.none;
 
@@ -99,7 +104,7 @@ namespace SSWEditor
             }
         }
 
-        private void ShowTupleEditor()
+        private void ShowTurtleEditor()
         {
             Notation3Writer w = new Notation3Writer();
             string data = VDS.RDF.Writing.StringWriter.Write(g, w);
@@ -124,11 +129,11 @@ namespace SSWEditor
             {
                 UpdateTextEditor();
                 editingContent = EditingContent.updating;
-                ShowTupleEditor();
+                ShowTurtleEditor();
                 ShowTableEditor();
                 editingContent = EditingContent.none;
             }
-            else if (editingContent == EditingContent.tuple)
+            else if (editingContent == EditingContent.turtle)
             {
                 UpdateTupleEditor();
                 editingContent = EditingContent.updating;
@@ -141,7 +146,7 @@ namespace SSWEditor
                 UpdateTableEditor();
                 editingContent = EditingContent.updating;
                 ShowTextEditor();
-                ShowTupleEditor();
+                ShowTurtleEditor();
                 editingContent = EditingContent.none;
             }
         }
@@ -201,7 +206,7 @@ namespace SSWEditor
                     else
                     {
                         string objUri = obj;
-                        if (objUri.Length > 255) objUri = objUri.Substring(0, 255);
+                        if (objUri.Length > 64) objUri = objUri.Substring(0, 64);
                         objUri = Uri.EscapeUriString(obj);
                         currUri = string.Format("{0}/s#{1}", graphUri, objUri);
                         currLabel = obj;
@@ -276,16 +281,19 @@ namespace SSWEditor
             MessageBox.Show("graph is saved");
         }
 
-        private void textBoxTextEditor_TextChanged(object sender, TextChangedEventArgs e)
+
+        private void textBoxTextEditor_TextChanged(object sender, EventArgs e)
         {
             if (editingContent == EditingContent.updating) return;
             if (editingContent == EditingContent.none) editingContent = EditingContent.text;
+
         }
 
-        private void textBoxTurtleEditor_TextChanged(object sender, TextChangedEventArgs e)
+        private void textBoxTurtleEditor_TextChanged(object sender, EventArgs e)
         {
             if (editingContent == EditingContent.updating) return;
-            if (editingContent == EditingContent.none) editingContent = EditingContent.tuple;
+            if (editingContent == EditingContent.none) editingContent = EditingContent.turtle;
+
         }
 
         private void dataGridTableEditor_CellValueChanged(object sender, DataGridViewCellEventArgs e)
@@ -293,22 +301,6 @@ namespace SSWEditor
             if (editingContent == EditingContent.updating) return;
             if (editingContent == EditingContent.none) editingContent = EditingContent.table;
         }
-
-        private void textBoxTextEditor_TextChangedDelayed(object sender, FastColoredTextBoxNS.TextChangedEventArgs e)
-        {
-            var tb = (FastColoredTextBox)sender;
-            tb.SyntaxHighlighter.InitStyleSchema(Language.HTML);
-            tb.SyntaxHighlighter.HTMLSyntaxHighlight(tb.Range);
-        }
-
-        private void textBoxTurtleEditor_TextChangedDelayed(object sender, FastColoredTextBoxNS.TextChangedEventArgs e)
-        {
-            var tb = (FastColoredTextBox)sender;
-            tb.SyntaxHighlighter.InitStyleSchema(Language.HTML);
-            tb.SyntaxHighlighter.HTMLSyntaxHighlight(tb.Range);
-
-        }
-
 
         private void tabControl3_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -372,14 +364,14 @@ namespace SSWEditor
                 Object results = g.ExecuteQuery(textBoxQuery.Text);
                 if (results is SparqlResultSet)
                 {
-                    Dictionary<string,int> keyIdxMap = new Dictionary<string,int>();
+                    Dictionary<string, int> keyIdxMap = new Dictionary<string, int>();
                     SparqlResultSet rset = (SparqlResultSet)results;
-                    int idx =0;
+                    int idx = 0;
                     foreach (SparqlResult result in rset)
                     {
                         foreach (var cell in result)
                         {
-                            if ( !keyIdxMap.ContainsKey(cell.Key) ) keyIdxMap[cell.Key] = idx++;
+                            if (!keyIdxMap.ContainsKey(cell.Key)) keyIdxMap[cell.Key] = idx++;
                         }
                         break;
                     }
@@ -411,10 +403,94 @@ namespace SSWEditor
             }
         }
 
-        private void buttonChangeGraphUri_Click(object sender, EventArgs e)
-        {
 
+
+
+    }
+
+    public static class StringExtensions
+    {
+        public static string ReduceIndent(this string line, int level)
+        {
+            var unindentedChars = line.SkipWhile((c, index) => char.IsWhiteSpace(c) && index < level);
+            return new string(unindentedChars.ToArray());
         }
 
+        public static string IncreaseIndent(this string line, int level)
+        {
+            return new string(' ', level)+line;
+        }
+    }
+
+    public class sswTextBox : RichTextBox
+    {
+        bool isShift = false;
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+            isShift = e.Shift;
+        }
+
+        protected override void OnLinkClicked(LinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(e.LinkText);
+            base.OnLinkClicked(e);
+        }
+      
+        protected override void OnKeyPress(KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Return)
+            {
+                e.Handled = true;
+
+                int pos = this.SelectionStart;
+                int lineNumber = this.GetLineFromCharIndex(pos) - 1;
+                String currentLineStr = this.Lines[lineNumber];
+
+                int firstChar = 0;
+                while (firstChar != currentLineStr.Length)
+                {
+                    if (!Char.IsWhiteSpace(currentLineStr[firstChar])) break;
+                    firstChar++;
+                }
+                String indent = currentLineStr.Substring(0, firstChar);
+                this.SelectedText = indent;
+            }
+            else if (e.KeyChar == '\t')
+            {
+                e.Handled = true;
+
+                if (!isShift && this.SelectionLength == 0)
+                {
+                    this.SelectedText = "    ";
+                }
+                else
+                {
+                    int lineStart = this.GetLineFromCharIndex(this.SelectionStart);
+                    int lineEnd = this.GetLineFromCharIndex(this.SelectionStart + this.SelectionLength);
+                    int selStart = this.GetFirstCharIndexFromLine(lineStart);
+                    int selEnd = this.GetFirstCharIndexFromLine(lineEnd) + this.Lines[lineEnd].Length;
+                    int selLength = selEnd - selStart;
+                    this.SelectionStart = selStart;
+                    this.SelectionLength = selLength;
+
+                    var lines = this.SelectedText.Split(new[] { '\n' }, StringSplitOptions.None);
+                    string replacement = "";
+                    if (isShift)
+                    {
+                        replacement = string.Join("\n", lines.Select(line => line.ReduceIndent(4)));
+                    }
+                    else
+                    {
+                        replacement = string.Join("\n", lines.Select(line => line.IncreaseIndent(4)));
+                    }
+                    this.SelectedText = replacement;
+                    this.SelectionStart = selStart;
+                    this.SelectionLength = replacement.Length;
+                }
+            }
+
+            base.OnKeyPress(e);
+        }
     }
 }
