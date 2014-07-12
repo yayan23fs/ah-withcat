@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -39,13 +38,9 @@
             this.buttonSave = new System.Windows.Forms.Button();
             this.tabControl3 = new System.Windows.Forms.TabControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.textBoxTextEditor = new FastColoredTextBoxNS.FastColoredTextBox();
-            this.documentMapTextEditor = new FastColoredTextBoxNS.DocumentMap();
+            this.textBoxTextEditor = new SSWEditor.sswTextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.textBoxTurtleEditor = new FastColoredTextBoxNS.FastColoredTextBox();
-            this.documentMapTurtleEditor = new FastColoredTextBoxNS.DocumentMap();
+            this.textBoxTurtleEditor = new SSWEditor.sswTextBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.dataGridTableEditor = new System.Windows.Forms.DataGridView();
             this.S = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -55,9 +50,9 @@
             this.webBrowserRelfinder = new System.Windows.Forms.WebBrowser();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.textBoxQuery = new SSWEditor.sswTextBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.buttonQuery = new System.Windows.Forms.Button();
-            this.textBoxQuery = new FastColoredTextBoxNS.FastColoredTextBox();
             this.dataGridViewSPARQL = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -69,17 +64,7 @@
             this.panel1.SuspendLayout();
             this.tabControl3.SuspendLayout();
             this.tabPage5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxTextEditor)).BeginInit();
             this.tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
-            this.splitContainer2.Panel1.SuspendLayout();
-            this.splitContainer2.Panel2.SuspendLayout();
-            this.splitContainer2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxTurtleEditor)).BeginInit();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridTableEditor)).BeginInit();
             this.tabPage6.SuspendLayout();
@@ -89,7 +74,6 @@
             this.splitContainer3.Panel2.SuspendLayout();
             this.splitContainer3.SuspendLayout();
             this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxQuery)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSPARQL)).BeginInit();
             this.tabPage1.SuspendLayout();
             this.SuspendLayout();
@@ -132,7 +116,7 @@
             // 
             // tabPage5
             // 
-            this.tabPage5.Controls.Add(this.splitContainer1);
+            this.tabPage5.Controls.Add(this.textBoxTextEditor);
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
@@ -141,70 +125,24 @@
             this.tabPage5.Text = "Text Editor";
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
-            // splitContainer1
-            // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-            this.splitContainer1.Location = new System.Drawing.Point(3, 3);
-            this.splitContainer1.Name = "splitContainer1";
-            // 
-            // splitContainer1.Panel1
-            // 
-            this.splitContainer1.Panel1.Controls.Add(this.textBoxTextEditor);
-            // 
-            // splitContainer1.Panel2
-            // 
-            this.splitContainer1.Panel2.Controls.Add(this.documentMapTextEditor);
-            this.splitContainer1.Size = new System.Drawing.Size(428, 261);
-            this.splitContainer1.SplitterDistance = 260;
-            this.splitContainer1.TabIndex = 0;
-            // 
             // textBoxTextEditor
             // 
-            this.textBoxTextEditor.AutoCompleteBracketsList = new char[] {
-        '(',
-        ')',
-        '{',
-        '}',
-        '[',
-        ']',
-        '\"',
-        '\"',
-        '\'',
-        '\''};
-            this.textBoxTextEditor.AutoScrollMinSize = new System.Drawing.Size(25, 15);
-            this.textBoxTextEditor.BackBrush = null;
-            this.textBoxTextEditor.CharHeight = 15;
-            this.textBoxTextEditor.CharWidth = 7;
-            this.textBoxTextEditor.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.textBoxTextEditor.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.textBoxTextEditor.AcceptsTab = true;
+            this.textBoxTextEditor.BackColor = System.Drawing.SystemColors.Control;
+            this.textBoxTextEditor.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBoxTextEditor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxTextEditor.Font = new System.Drawing.Font("Consolas", 9.75F);
-            this.textBoxTextEditor.IsReplaceMode = false;
-            this.textBoxTextEditor.Location = new System.Drawing.Point(0, 0);
+            this.textBoxTextEditor.Font = new System.Drawing.Font("나눔고딕코딩", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.textBoxTextEditor.Location = new System.Drawing.Point(3, 3);
             this.textBoxTextEditor.Name = "textBoxTextEditor";
-            this.textBoxTextEditor.Paddings = new System.Windows.Forms.Padding(0);
-            this.textBoxTextEditor.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
-            this.textBoxTextEditor.Size = new System.Drawing.Size(260, 261);
-            this.textBoxTextEditor.TabIndex = 0;
-            this.textBoxTextEditor.Zoom = 100;
-            this.textBoxTextEditor.TextChanged += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.textBoxTextEditor_TextChanged);
-            this.textBoxTextEditor.TextChangedDelayed += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.textBoxTextEditor_TextChangedDelayed);
-            // 
-            // documentMapTextEditor
-            // 
-            this.documentMapTextEditor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.documentMapTextEditor.ForeColor = System.Drawing.Color.Maroon;
-            this.documentMapTextEditor.Location = new System.Drawing.Point(0, 0);
-            this.documentMapTextEditor.Name = "documentMapTextEditor";
-            this.documentMapTextEditor.Size = new System.Drawing.Size(164, 261);
-            this.documentMapTextEditor.TabIndex = 0;
-            this.documentMapTextEditor.Target = this.textBoxTextEditor;
-            this.documentMapTextEditor.Text = "documentMap1";
+            this.textBoxTextEditor.Size = new System.Drawing.Size(428, 261);
+            this.textBoxTextEditor.TabIndex = 1;
+            this.textBoxTextEditor.Text = "";
+            this.textBoxTextEditor.WordWrap = false;
+            this.textBoxTextEditor.TextChanged += new System.EventHandler(this.textBoxTextEditor_TextChanged);
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.splitContainer2);
+            this.tabPage2.Controls.Add(this.textBoxTurtleEditor);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -213,66 +151,20 @@
             this.tabPage2.Text = "Turtle Editor (sync)";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // splitContainer2
-            // 
-            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-            this.splitContainer2.Location = new System.Drawing.Point(3, 3);
-            this.splitContainer2.Name = "splitContainer2";
-            // 
-            // splitContainer2.Panel1
-            // 
-            this.splitContainer2.Panel1.Controls.Add(this.textBoxTurtleEditor);
-            // 
-            // splitContainer2.Panel2
-            // 
-            this.splitContainer2.Panel2.Controls.Add(this.documentMapTurtleEditor);
-            this.splitContainer2.Size = new System.Drawing.Size(428, 261);
-            this.splitContainer2.SplitterDistance = 260;
-            this.splitContainer2.TabIndex = 0;
-            // 
             // textBoxTurtleEditor
             // 
-            this.textBoxTurtleEditor.AutoCompleteBracketsList = new char[] {
-        '(',
-        ')',
-        '{',
-        '}',
-        '[',
-        ']',
-        '\"',
-        '\"',
-        '\'',
-        '\''};
-            this.textBoxTurtleEditor.AutoScrollMinSize = new System.Drawing.Size(2, 15);
-            this.textBoxTurtleEditor.BackBrush = null;
-            this.textBoxTurtleEditor.CharHeight = 15;
-            this.textBoxTurtleEditor.CharWidth = 7;
-            this.textBoxTurtleEditor.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.textBoxTurtleEditor.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.textBoxTurtleEditor.AcceptsTab = true;
+            this.textBoxTurtleEditor.BackColor = System.Drawing.SystemColors.Control;
+            this.textBoxTurtleEditor.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBoxTurtleEditor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxTurtleEditor.Font = new System.Drawing.Font("Consolas", 9.75F);
-            this.textBoxTurtleEditor.IsReplaceMode = false;
-            this.textBoxTurtleEditor.Location = new System.Drawing.Point(0, 0);
+            this.textBoxTurtleEditor.Font = new System.Drawing.Font("나눔고딕코딩", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.textBoxTurtleEditor.Location = new System.Drawing.Point(3, 3);
             this.textBoxTurtleEditor.Name = "textBoxTurtleEditor";
-            this.textBoxTurtleEditor.Paddings = new System.Windows.Forms.Padding(0);
-            this.textBoxTurtleEditor.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
-            this.textBoxTurtleEditor.Size = new System.Drawing.Size(260, 261);
-            this.textBoxTurtleEditor.TabIndex = 0;
-            this.textBoxTurtleEditor.Zoom = 100;
-            this.textBoxTurtleEditor.TextChanged += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.textBoxTurtleEditor_TextChanged);
-            this.textBoxTurtleEditor.TextChangedDelayed += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.textBoxTurtleEditor_TextChangedDelayed);
-            // 
-            // documentMapTurtleEditor
-            // 
-            this.documentMapTurtleEditor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.documentMapTurtleEditor.ForeColor = System.Drawing.Color.Maroon;
-            this.documentMapTurtleEditor.Location = new System.Drawing.Point(0, 0);
-            this.documentMapTurtleEditor.Name = "documentMapTurtleEditor";
-            this.documentMapTurtleEditor.Size = new System.Drawing.Size(164, 261);
-            this.documentMapTurtleEditor.TabIndex = 0;
-            this.documentMapTurtleEditor.Target = this.textBoxTurtleEditor;
-            this.documentMapTurtleEditor.Text = "documentMap2";
+            this.textBoxTurtleEditor.Size = new System.Drawing.Size(428, 261);
+            this.textBoxTurtleEditor.TabIndex = 2;
+            this.textBoxTurtleEditor.Text = "";
+            this.textBoxTurtleEditor.WordWrap = false;
+            this.textBoxTurtleEditor.TextChanged += new System.EventHandler(this.textBoxTurtleEditor_TextChanged);
             // 
             // tabPage3
             // 
@@ -369,8 +261,8 @@
             // 
             // splitContainer3.Panel1
             // 
-            this.splitContainer3.Panel1.Controls.Add(this.panel2);
             this.splitContainer3.Panel1.Controls.Add(this.textBoxQuery);
+            this.splitContainer3.Panel1.Controls.Add(this.panel2);
             // 
             // splitContainer3.Panel2
             // 
@@ -379,12 +271,25 @@
             this.splitContainer3.SplitterDistance = 123;
             this.splitContainer3.TabIndex = 0;
             // 
+            // textBoxQuery
+            // 
+            this.textBoxQuery.AcceptsTab = true;
+            this.textBoxQuery.BackColor = System.Drawing.SystemColors.Control;
+            this.textBoxQuery.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBoxQuery.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBoxQuery.Font = new System.Drawing.Font("나눔고딕코딩", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.textBoxQuery.Location = new System.Drawing.Point(0, 0);
+            this.textBoxQuery.Name = "textBoxQuery";
+            this.textBoxQuery.Size = new System.Drawing.Size(428, 100);
+            this.textBoxQuery.TabIndex = 2;
+            this.textBoxQuery.Text = "SELECT * WHERE {?s ?p ?o} LIMIT 10";
+            this.textBoxQuery.WordWrap = false;
+            // 
             // panel2
             // 
-            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.Controls.Add(this.buttonQuery);
-            this.panel2.Location = new System.Drawing.Point(0, 97);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel2.Location = new System.Drawing.Point(0, 100);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(428, 23);
             this.panel2.TabIndex = 1;
@@ -398,39 +303,6 @@
             this.buttonQuery.Text = "Query";
             this.buttonQuery.UseVisualStyleBackColor = true;
             this.buttonQuery.Click += new System.EventHandler(this.buttonQuery_Click);
-            // 
-            // textBoxQuery
-            // 
-            this.textBoxQuery.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxQuery.AutoCompleteBracketsList = new char[] {
-        '(',
-        ')',
-        '{',
-        '}',
-        '[',
-        ']',
-        '\"',
-        '\"',
-        '\'',
-        '\''};
-            this.textBoxQuery.AutoScrollMinSize = new System.Drawing.Size(263, 15);
-            this.textBoxQuery.BackBrush = null;
-            this.textBoxQuery.CharHeight = 15;
-            this.textBoxQuery.CharWidth = 7;
-            this.textBoxQuery.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.textBoxQuery.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.textBoxQuery.Font = new System.Drawing.Font("Consolas", 9.75F);
-            this.textBoxQuery.IsReplaceMode = false;
-            this.textBoxQuery.Location = new System.Drawing.Point(0, 0);
-            this.textBoxQuery.Name = "textBoxQuery";
-            this.textBoxQuery.Paddings = new System.Windows.Forms.Padding(0);
-            this.textBoxQuery.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
-            this.textBoxQuery.Size = new System.Drawing.Size(428, 94);
-            this.textBoxQuery.TabIndex = 0;
-            this.textBoxQuery.Text = "SELECT * WHERE {?s ?p ?o} LIMIT 10";
-            this.textBoxQuery.Zoom = 100;
             // 
             // dataGridViewSPARQL
             // 
@@ -502,7 +374,6 @@
             this.buttonChangeGraphUri.TabIndex = 2;
             this.buttonChangeGraphUri.Text = "Update";
             this.buttonChangeGraphUri.UseVisualStyleBackColor = true;
-            this.buttonChangeGraphUri.Click += new System.EventHandler(this.buttonChangeGraphUri_Click);
             // 
             // textBoxGraphUri
             // 
@@ -533,17 +404,7 @@
             this.panel1.ResumeLayout(false);
             this.tabControl3.ResumeLayout(false);
             this.tabPage5.ResumeLayout(false);
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxTextEditor)).EndInit();
             this.tabPage2.ResumeLayout(false);
-            this.splitContainer2.Panel1.ResumeLayout(false);
-            this.splitContainer2.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
-            this.splitContainer2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxTurtleEditor)).EndInit();
             this.tabPage3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridTableEditor)).EndInit();
             this.tabPage6.ResumeLayout(false);
@@ -553,7 +414,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
             this.splitContainer3.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxQuery)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSPARQL)).EndInit();
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
@@ -576,12 +436,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn O;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.TabPage tabPage4;
-        private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.SplitContainer splitContainer2;
-        private FastColoredTextBoxNS.FastColoredTextBox textBoxTextEditor;
-        private FastColoredTextBoxNS.DocumentMap documentMapTextEditor;
-        private FastColoredTextBoxNS.FastColoredTextBox textBoxTurtleEditor;
-        private FastColoredTextBoxNS.DocumentMap documentMapTurtleEditor;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.SplitContainer splitContainer3;
         private System.Windows.Forms.DataGridView dataGridViewSPARQL;
@@ -590,10 +444,12 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Button buttonQuery;
-        private FastColoredTextBoxNS.FastColoredTextBox textBoxQuery;
         private System.Windows.Forms.Button buttonChangeGraphUri;
         private System.Windows.Forms.TextBox textBoxGraphUri;
         private System.Windows.Forms.Label label1;
+        private sswTextBox textBoxTextEditor;
+        private sswTextBox textBoxTurtleEditor;
+        private sswTextBox textBoxQuery;
 
 
 
