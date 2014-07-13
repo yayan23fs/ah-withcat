@@ -38,9 +38,9 @@
             this.buttonSave = new System.Windows.Forms.Button();
             this.tabControl3 = new System.Windows.Forms.TabControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.textBoxTextEditor = new SSWEditor.sswTextBox();
+            this.textBoxTextEditor = new SSWEditor.IndentTextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.textBoxTurtleEditor = new SSWEditor.sswTextBox();
+            this.textBoxTurtleEditor = new SSWEditor.IndentTextBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.dataGridTableEditor = new System.Windows.Forms.DataGridView();
             this.S = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -50,7 +50,7 @@
             this.webBrowserRelfinder = new System.Windows.Forms.WebBrowser();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
-            this.textBoxQuery = new SSWEditor.sswTextBox();
+            this.textBoxQuery = new SSWEditor.IndentTextBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.buttonQuery = new System.Windows.Forms.Button();
             this.dataGridViewSPARQL = new System.Windows.Forms.DataGridView();
@@ -447,9 +447,9 @@
         private System.Windows.Forms.Button buttonChangeGraphUri;
         private System.Windows.Forms.TextBox textBoxGraphUri;
         private System.Windows.Forms.Label label1;
-        private sswTextBox textBoxTextEditor;
-        private sswTextBox textBoxTurtleEditor;
-        private sswTextBox textBoxQuery;
+        private IndentTextBox textBoxTextEditor;
+        private IndentTextBox textBoxTurtleEditor;
+        private IndentTextBox textBoxQuery;
 
 
 

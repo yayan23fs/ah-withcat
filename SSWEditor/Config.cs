@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -34,6 +35,26 @@ namespace SSWEditor
             get { return showFusekiConsole; }
             set { showFusekiConsole = value; }
         }
+
+        private string editorFont = "";
+        public string EditorFont
+        {
+            get { return editorFont; }
+            set { editorFont = value; }
+        }
+
+        public void SetEditorFont(Font font)
+        {
+            var cvt = new FontConverter();
+            editorFont = cvt.ConvertToString(font);
+        }
+
+        public Font GetEditorFont()
+        {
+            var cvt = new FontConverter();
+            return cvt.ConvertFromString(editorFont) as Font;
+        }
+
 
         public static string GetRandomString(int length)
         {
