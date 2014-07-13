@@ -104,6 +104,9 @@
   <ItemGroup>
     <Compile Include="Config.cs" />
     <Compile Include="Fuseki.cs" />
+    <Compile Include="IndentTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="LoadingForm.cs">
       <SubType>Form</SubType>
     </Compile>

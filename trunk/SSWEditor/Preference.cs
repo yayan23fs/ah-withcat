@@ -19,11 +19,23 @@ namespace SSWEditor
 
         private void Preference_Load(object sender, EventArgs e)
         {
-            textBoxGraphPrefix.Text = MainForm.config.GlobalPrefix;
-            numericUpDownFusekiPort.Minimum = 1;
-            numericUpDownFusekiPort.Maximum = 65535;
-            numericUpDownFusekiPort.Value = MainForm.config.FusekiPort;
-            checkBoxShowFusekiConsole.Checked = MainForm.config.ShowFusekiConsole;
+            try
+            {
+                textBoxGraphPrefix.Text = MainForm.config.GlobalPrefix;
+                numericUpDownFusekiPort.Minimum = 1;
+                numericUpDownFusekiPort.Maximum = 65535;
+                numericUpDownFusekiPort.Value = MainForm.config.FusekiPort;
+                checkBoxShowFusekiConsole.Checked = MainForm.config.ShowFusekiConsole;
+
+                var cvt = new FontConverter();
+                fontDialog1.Font = MainForm.config.GetEditorFont();
+                textBoxFont.Text = fontDialog1.Font.Name;
+                textBoxFont.Font = fontDialog1.Font;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("error during load font config. " + ex);
+            }
         }
 
         private void buttonOk_Click(object sender, EventArgs e)
@@ -31,6 +43,8 @@ namespace SSWEditor
             MainForm.config.GlobalPrefix = textBoxGraphPrefix.Text;
             MainForm.config.FusekiPort = (int)numericUpDownFusekiPort.Value;
             MainForm.config.ShowFusekiConsole = checkBoxShowFusekiConsole.Checked;
+            MainForm.config.SetEditorFont(fontDialog1.Font);
+
             MainForm.SaveConfig();
             DialogResult = DialogResult.OK;
             this.Close();
@@ -70,6 +84,16 @@ namespace SSWEditor
                 buttonOk_Click(null, null);
             }
 
+        }
+
+        private void buttonFont_Click(object sender, EventArgs e)
+        {
+            DialogResult result = fontDialog1.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                textBoxFont.Text = fontDialog1.Font.Name;
+                textBoxFont.Font = fontDialog1.Font;
+            }
         }
     }
 }
