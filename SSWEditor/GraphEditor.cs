@@ -123,6 +123,22 @@ namespace SSWEditor
             }
         }
 
+        private void ReportMsg(Exception ex)
+        {
+            textBoxMsg.Text = ex.ToString();
+        }
+
+        private void ReportMsg(string ex)
+        {
+            textBoxMsg.Text = ex;
+        }
+
+        public bool RequestSave()
+        {
+            if (editingContent == EditingContent.none) return false;
+            return true;
+        }
+
         private void UpdateEditor()
         {
             if (editingContent == EditingContent.updating) return;
@@ -156,124 +172,155 @@ namespace SSWEditor
 
         private void UpdateTextEditor()
         {
-            g.Clear();
-            string[] lines = textBoxTextEditor.Text.Split(new char[] { '\n' });
-
-            IUriNode nLabel = g.CreateUriNode(UriFactory.Create("http://www.w3.org/2000/01/rdf-schema#label"));
-            List<string> parentList = new List<string>();
-            parentList.Add(graphUri);
-            foreach (string line in lines)
+            try
             {
-                string obj = line.TrimEnd();
-                int tab = 0;
-                Match lSpaceMatch = Regex.Match(obj, @"^[\s]+");
-                if (lSpaceMatch.Success)
-                {
-                    tab = lSpaceMatch.Length / 4;
-                }
-                obj = obj.TrimStart();
-                if (obj == "") continue;
+                g.Clear();
+                string[] lines = textBoxTextEditor.Text.Split(new char[] { '\n' });
 
-                char[] objChars = obj.ToCharArray();
-                List<string> predicateList = new List<string>();
-                MatchCollection rPredicateMatchs = Regex.Matches(obj, @"\@(.+?\b)");
-                foreach (Match rPredicateMatch in rPredicateMatchs)
+                IUriNode nLabel = g.CreateUriNode(UriFactory.Create("http://www.w3.org/2000/01/rdf-schema#label"));
+                List<string> parentList = new List<string>();
+                parentList.Add(graphUri);
+                foreach (string line in lines)
                 {
-                    for (int i = rPredicateMatch.Index; i < rPredicateMatch.Index + rPredicateMatch.Length; i++)
+                    string obj = line.TrimEnd();
+                    int tab = 0;
+                    Match lSpaceMatch = Regex.Match(obj, @"^[\s]+");
+                    if (lSpaceMatch.Success)
                     {
-                        objChars[i] = ' ';
+                        tab = lSpaceMatch.Length / 4;
                     }
-                    predicateList.Add(string.Format("{0}p#{1}", MainForm.config.GlobalPrefix, rPredicateMatch.Value.Substring(1)));
-                }
-                obj = string.Join("", objChars).Trim();
+                    obj = obj.TrimStart();
+                    if (obj == "") continue;
 
-                if (predicateList.Count == 0)
-                {
-                    predicateList.Add("http://rdfs.org/sioc/ns#container_of");
-                }
-
-                string currUri = "", currLabel = "";
-                if (obj[0] == '#')
-                {
-                    currUri = string.Format("{0}s#{1}", MainForm.config.GlobalPrefix, obj.Substring(1).Trim());
-                    currLabel = obj.Substring(1);
-                }
-                else
-                {
-                    Uri tryUri;
-                    if (Uri.TryCreate(obj, UriKind.Absolute, out tryUri))
+                    char[] objChars = obj.ToCharArray();
+                    List<string> predicateList = new List<string>();
+                    MatchCollection rPredicateMatchs = Regex.Matches(obj, @"\@(.+?\b)");
+                    foreach (Match rPredicateMatch in rPredicateMatchs)
                     {
-                        currUri = tryUri.ToString();
-                        currLabel = currUri;
+                        for (int i = rPredicateMatch.Index; i < rPredicateMatch.Index + rPredicateMatch.Length; i++)
+                        {
+                            objChars[i] = ' ';
+                        }
+                        predicateList.Add(string.Format("{0}p#{1}", MainForm.config.GlobalPrefix, rPredicateMatch.Value.Substring(1)));
+                    }
+                    obj = string.Join("", objChars).Trim();
+
+                    if (predicateList.Count == 0)
+                    {
+                        predicateList.Add("http://rdfs.org/sioc/ns#container_of");
+                    }
+
+                    string currUri = "", currLabel = "";
+                    if (obj[0] == '#')
+                    {
+                        currUri = string.Format("{0}s#{1}", MainForm.config.GlobalPrefix, obj.Substring(1).Trim());
+                        currLabel = obj.Substring(1);
                     }
                     else
                     {
-                        string objUri = obj;
-                        if (objUri.Length > 64) objUri = objUri.Substring(0, 64);
-                        objUri = Uri.EscapeUriString(obj);
-                        currUri = string.Format("{0}/s#{1}", graphUri, objUri);
-                        currLabel = obj;
+                        Uri tryUri;
+                        if (Uri.TryCreate(obj, UriKind.Absolute, out tryUri))
+                        {
+                            currUri = tryUri.ToString();
+                            currLabel = currUri;
+                        }
+                        else
+                        {
+                            string objUri = obj;
+                            if (objUri.Length > 64) objUri = objUri.Substring(0, 64);
+                            objUri = Uri.EscapeUriString(obj);
+                            currUri = string.Format("{0}/s#{1}", graphUri, objUri);
+                            currLabel = obj;
+                        }
                     }
-                }
 
-                while (parentList.Count >= tab + 2)
-                {
-                    parentList.RemoveAt(parentList.Count - 1);
-                }
-                string parentUri = parentList.Last();
+                    while (parentList.Count >= tab + 2)
+                    {
+                        parentList.RemoveAt(parentList.Count - 1);
+                    }
+                    string parentUri = parentList.Last();
 
-                foreach (string predicateUri in predicateList)
-                {
-                    IUriNode nS = g.CreateUriNode(UriFactory.Create(parentUri));
-                    IUriNode nP = g.CreateUriNode(UriFactory.Create(predicateUri));
-                    IUriNode nO = g.CreateUriNode(UriFactory.Create(currUri));
-                    g.Assert(new Triple(nS, nP, nO));
+                    foreach (string predicateUri in predicateList)
+                    {
+                        IUriNode nS = g.CreateUriNode(UriFactory.Create(parentUri));
+                        IUriNode nP = g.CreateUriNode(UriFactory.Create(predicateUri));
+                        IUriNode nO = g.CreateUriNode(UriFactory.Create(currUri));
+                        g.Assert(new Triple(nS, nP, nO));
 
-                    ILiteralNode nLabelVal = g.CreateLiteralNode(currLabel);
-                    g.Assert(new Triple(nO, nLabel, nLabelVal));
+                        ILiteralNode nLabelVal = g.CreateLiteralNode(currLabel);
+                        g.Assert(new Triple(nO, nLabel, nLabelVal));
+                    }
+                    parentList.Add(currUri);
                 }
-                parentList.Add(currUri);
+                ReportMsg("");
+            }
+            catch (Exception ex)
+            {
+                ReportMsg(ex);
             }
         }
 
+
+
         private void UpdateTupleEditor()
         {
-            g.Clear();
-            TurtleParser parser = new TurtleParser();
-            TextReader sr = new StringReader(textBoxTurtleEditor.Text);
-            parser.Load(g, sr);
+            try
+            {
+                g.Clear();
+                TurtleParser parser = new TurtleParser();
+                TextReader sr = new StringReader(textBoxTurtleEditor.Text);
+                parser.Load(g, sr);
+                ReportMsg("");
+            }
+            catch (Exception ex)
+            {
+                ReportMsg(ex);
+            }
         }
 
         private void UpdateTableEditor()
         {
-            g.Clear();
-            for (int i = 0; i < dataGridTableEditor.Rows.Count; i++)
+            try
             {
-                var row = dataGridTableEditor.Rows[i];
-                string s, p, o;
-                if (row.Cells[0].Value == null || row.Cells[1].Value == null || row.Cells[2].Value == null) continue;
-                s = row.Cells[0].Value.ToString();
-                p = row.Cells[1].Value.ToString();
-                o = row.Cells[2].Value.ToString();
-                Triple triple;
-                IUriNode ns = g.CreateUriNode(UriFactory.Create(s));
-                IUriNode np = g.CreateUriNode(UriFactory.Create(p));
-                Uri tryUri;
-                if (Uri.TryCreate(o, UriKind.Absolute, out tryUri))
+                g.Clear();
+                for (int i = 0; i < dataGridTableEditor.Rows.Count; i++)
                 {
-                    IUriNode no = g.CreateUriNode(UriFactory.Create(o));
-                    triple = new Triple(ns, np, no);
+                    var row = dataGridTableEditor.Rows[i];
+                    string s, p, o;
+                    if (row.Cells[0].Value == null || row.Cells[1].Value == null || row.Cells[2].Value == null) continue;
+                    s = row.Cells[0].Value.ToString();
+                    p = row.Cells[1].Value.ToString();
+                    o = row.Cells[2].Value.ToString();
+                    Triple triple;
+                    IUriNode ns = g.CreateUriNode(UriFactory.Create(s));
+                    IUriNode np = g.CreateUriNode(UriFactory.Create(p));
+                    Uri tryUri;
+                    if (Uri.TryCreate(o, UriKind.Absolute, out tryUri))
+                    {
+                        IUriNode no = g.CreateUriNode(UriFactory.Create(o));
+                        triple = new Triple(ns, np, no);
+                    }
+                    else
+                    {
+                        ILiteralNode no = g.CreateLiteralNode(o);
+                        triple = new Triple(ns, np, no);
+                    }
+                    g.Assert(triple);
                 }
-                else
-                {
-                    ILiteralNode no = g.CreateLiteralNode(o);
-                    triple = new Triple(ns, np, no);
-                }
-                g.Assert(triple);
+                ReportMsg("");
+            }
+            catch (Exception ex)
+            {
+                ReportMsg(ex);
             }
         }
 
         private void buttonSave_Click(object sender, EventArgs e)
+        {
+            SaveGraph();
+        }
+
+        public void SaveGraph()
         {
             UpdateEditor();
 
@@ -281,7 +328,7 @@ namespace SSWEditor
             File.WriteAllText(filePath, textBoxTextEditor.Text);
             MainForm.fuseki.SaveGraph(g);
 
-            MessageBox.Show("graph is saved");
+            ReportMsg("graph is saved");
         }
 
 

@@ -179,7 +179,7 @@ namespace SSWEditor
             TabPage tabpage = null;
             foreach (TabPage page in tabControlGraph.TabPages)
             {
-                if ((string)page.Tag == uri) tabpage = page;
+                if (page.Text == uri) tabpage = page;
             }
 
             if (tabpage == null)
@@ -189,7 +189,7 @@ namespace SSWEditor
                 graphEditor.SetGraph(uri);
                 graphEditor.Dock = DockStyle.Fill;
                 tabpage.Controls.Add(graphEditor);
-                tabpage.Tag = uri;
+                tabpage.Tag = graphEditor;
 
                 tabControlGraph.TabPages.Add(tabpage);
 
@@ -249,6 +249,16 @@ namespace SSWEditor
         private void closeGraphToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if ( tabControlGraph.TabPages.Count == 0 ) return;
+
+            GraphEditor graphEditor = (GraphEditor)tabControlGraph.SelectedTab.Tag;
+            if (graphEditor.RequestSave())
+            {
+                if (MessageBox.Show(string.Format("save graph before closing graph {0}", graphEditor.graphUri), "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    graphEditor.SaveGraph();
+                }
+            }
+
             int removeIdx = tabControlGraph.SelectedIndex;
             tabControlGraph.TabPages.Remove(tabControlGraph.SelectedTab);
             if (removeIdx == tabControlGraph.TabPages.Count)
@@ -263,6 +273,28 @@ namespace SSWEditor
             {
                 closeGraphToolStripMenuItem.Enabled = false;
             }
+        }
+
+        private void closeAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CloseAllTabs();
+        }
+
+        private void CloseAllTabs()
+        {
+            if (tabControlGraph.TabPages.Count == 0) return;
+            foreach (TabPage page in tabControlGraph.TabPages)
+            {
+                GraphEditor graphEditor = (GraphEditor)tabControlGraph.SelectedTab.Tag;
+                if (graphEditor.RequestSave())
+                {
+                    if (MessageBox.Show(string.Format("save graph before closing graph {0}", graphEditor.graphUri), "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    {
+                        graphEditor.SaveGraph();
+                    }
+                }
+            }
+            tabControlGraph.TabPages.Clear();
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
@@ -282,7 +314,7 @@ namespace SSWEditor
             TabPage tabpage = null;
             foreach (TabPage page in tabControlGraph.TabPages)
             {
-                if ((string)page.Tag == graphUri) tabpage = page;
+                if (page.Text == graphUri) tabpage = page;
             }
 
             if (tabpage != null)
@@ -329,8 +361,29 @@ namespace SSWEditor
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            CloseAllTabs();
             Application.Exit();
         }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (tabControlGraph.TabPages.Count == 0) return;
+            GraphEditor graphEditor = (GraphEditor)tabControlGraph.SelectedTab.Tag;
+            graphEditor.SaveGraph();
+            UpdateListViewGraph();
+        }
+
+        private void saveAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (tabControlGraph.TabPages.Count == 0) return;
+            foreach (TabPage page in tabControlGraph.TabPages)
+            {
+                GraphEditor graphEditor = (GraphEditor)page.Tag;
+                graphEditor.SaveGraph();
+            }
+            UpdateListViewGraph();
+        }
+
     }
 
   
