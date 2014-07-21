@@ -152,7 +152,7 @@ namespace SSWEditor
                 foreach (string uri in graphs)
                 {
                     string graphBase64 = GraphEditor.Base64Encode(uri);
-                    string filePath = string.Format(@"{0}\{1}.xml", documentRoot, graphBase64);
+                    string filePath = string.Format(@"{0}\{1}.txt", documentRoot, graphBase64);
                     string updateDate = "";
                     if (File.Exists(filePath))
                     {

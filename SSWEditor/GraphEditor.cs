@@ -100,7 +100,7 @@ namespace SSWEditor
 
         private void ShowTextEditor()
         {
-            string filePath = string.Format(@"{0}\{1}.xml", MainForm.documentRoot, graphBase64);
+            string filePath = string.Format(@"{0}\{1}.txt", MainForm.documentRoot, graphBase64);
             if (File.Exists(filePath))
             {
                 textBoxTextEditor.Text = File.ReadAllText(filePath);
@@ -324,7 +324,7 @@ namespace SSWEditor
         {
             UpdateEditor();
 
-            string filePath = string.Format(@"{0}\{1}.xml", MainForm.documentRoot, graphBase64);
+            string filePath = string.Format(@"{0}\{1}.txt", MainForm.documentRoot, graphBase64);
             File.WriteAllText(filePath, textBoxTextEditor.Text);
             MainForm.fuseki.SaveGraph(g);
 
