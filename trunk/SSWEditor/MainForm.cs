@@ -53,16 +53,16 @@ namespace SSWEditor
                 Fuseki.Start(MainForm.config.ShowFusekiConsole);
                 fuseki = new FusekiConnector("http://localhost:" + config.FusekiPort + "/ds/data");
 
-                if (!fuseki.IsReady)
+                if (!CheckFusekiConnection())
                 {
                     Thread.Sleep(1000);
-                    for (int i = 1; i <= 3 && !fuseki.IsReady; i++)
+                    for (int i = 1; i <= 3 && !CheckFusekiConnection(); i++)
                     {
                         if (MessageBox.Show(string.Format("Fuseki server is not ready. Retry to connect ({0})", i)
                             , "Infomation", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.No) break;
                     }
                 }
-                if (!fuseki.IsReady)
+                if (!CheckFusekiConnection())
                 {
                     MessageBox.Show("Fuseki server is not ready. Exit the application.");
                     Application.Exit();
@@ -155,16 +155,23 @@ namespace SSWEditor
             }
         }
 
+        private bool CheckFusekiConnection()
+        {
+            try
+            {
+                fuseki.ListGraphs();
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
+        }
+
         private void UpdateListViewGraph()
         {
             try
             {
-                if (!fuseki.IsReady)
-                {
-                    MessageBox.Show("fuseki server is not ready");
-                    return;
-                }
-
                 listViewGraph.Items.Clear();
 
                 List<string> graphs = new List<string>();
