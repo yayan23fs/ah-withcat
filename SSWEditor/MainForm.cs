@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Serialization;
@@ -43,12 +44,29 @@ namespace SSWEditor
                 MessageBox.Show("error during document root creation");
             }
 
+
             LoadConfig();
-            Fuseki.Start(MainForm.config.ShowFusekiConsole);
+
 
             try
             {
+                Fuseki.Start(MainForm.config.ShowFusekiConsole);
                 fuseki = new FusekiConnector("http://localhost:" + config.FusekiPort + "/ds/data");
+
+                if (!fuseki.IsReady)
+                {
+                    Thread.Sleep(1000);
+                    for (int i = 1; i <= 3 && !fuseki.IsReady; i++)
+                    {
+                        if (MessageBox.Show(string.Format("Fuseki server is not ready. Retry to connect ({0})", i)
+                            , "Infomation", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.No) break;
+                    }
+                }
+                if (!fuseki.IsReady)
+                {
+                    MessageBox.Show("Fuseki server is not ready. Exit the application.");
+                    Application.Exit();
+                }
             }
             catch (Exception ex)
             {
