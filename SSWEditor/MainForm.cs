@@ -141,6 +141,12 @@ namespace SSWEditor
         {
             try
             {
+                if (!fuseki.IsReady)
+                {
+                    MessageBox.Show("fuseki server is not ready");
+                    return;
+                }
+
                 listViewGraph.Items.Clear();
 
                 List<string> graphs = new List<string>();

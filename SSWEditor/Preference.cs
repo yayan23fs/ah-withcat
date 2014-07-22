@@ -56,23 +56,6 @@ namespace SSWEditor
             this.Close();
         }
 
-        private void buttonFusekiRestart_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                Fuseki.Start(checkBoxShowFusekiConsole.Checked);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-                return;
-            }
-            if (!checkBoxShowFusekiConsole.Checked)
-            {
-                MessageBox.Show("restarted");
-            }
-        }
-
         private void Preference_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Escape)
@@ -93,6 +76,23 @@ namespace SSWEditor
             {
                 textBoxFont.Text = fontDialog1.Font.Name;
                 textBoxFont.Font = fontDialog1.Font;
+            }
+        }
+
+        private void buttonFusekiRestart_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                Fuseki.Start(checkBoxShowFusekiConsole.Checked);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                return;
+            }
+            if (!checkBoxShowFusekiConsole.Checked)
+            {
+                MessageBox.Show("restarted");
             }
         }
     }

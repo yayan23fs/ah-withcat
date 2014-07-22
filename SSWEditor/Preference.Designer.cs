@@ -32,21 +32,21 @@
             this.buttonCancel = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.checkBoxShowFusekiConsole = new System.Windows.Forms.CheckBox();
             this.buttonFusekiRestart = new System.Windows.Forms.Button();
             this.numericUpDownFusekiPort = new System.Windows.Forms.NumericUpDown();
             this.textBoxGraphPrefix = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.buttonFont = new System.Windows.Forms.Button();
-            this.fontDialog1 = new System.Windows.Forms.FontDialog();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.textBoxFont = new System.Windows.Forms.TextBox();
+            this.buttonFont = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.fontDialog1 = new System.Windows.Forms.FontDialog();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownFusekiPort)).BeginInit();
+            this.tabPage2.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonOk
@@ -100,19 +100,6 @@
             this.tabPage1.Text = "Graph";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.textBoxFont);
-            this.tabPage2.Controls.Add(this.buttonFont);
-            this.tabPage2.Controls.Add(this.label3);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(478, 129);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Appearance";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
             // checkBoxShowFusekiConsole
             // 
             this.checkBoxShowFusekiConsole.AutoSize = true;
@@ -131,6 +118,7 @@
             this.buttonFusekiRestart.TabIndex = 18;
             this.buttonFusekiRestart.Text = "Restart";
             this.buttonFusekiRestart.UseVisualStyleBackColor = true;
+            this.buttonFusekiRestart.Click += new System.EventHandler(this.buttonFusekiRestart_Click_1);
             // 
             // numericUpDownFusekiPort
             // 
@@ -166,14 +154,28 @@
             this.label1.TabIndex = 15;
             this.label1.Text = "Graph Prefix";
             // 
-            // label3
+            // tabPage2
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(14, 41);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(29, 12);
-            this.label3.TabIndex = 16;
-            this.label3.Text = "Font";
+            this.tabPage2.Controls.Add(this.textBoxFont);
+            this.tabPage2.Controls.Add(this.buttonFont);
+            this.tabPage2.Controls.Add(this.label3);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(478, 129);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Appearance";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // textBoxFont
+            // 
+            this.textBoxFont.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxFont.Location = new System.Drawing.Point(105, 38);
+            this.textBoxFont.Name = "textBoxFont";
+            this.textBoxFont.ReadOnly = true;
+            this.textBoxFont.Size = new System.Drawing.Size(275, 21);
+            this.textBoxFont.TabIndex = 20;
             // 
             // buttonFont
             // 
@@ -185,19 +187,18 @@
             this.buttonFont.UseVisualStyleBackColor = true;
             this.buttonFont.Click += new System.EventHandler(this.buttonFont_Click);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(14, 41);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(29, 12);
+            this.label3.TabIndex = 16;
+            this.label3.Text = "Font";
+            // 
             // fontDialog1
             // 
             this.fontDialog1.Font = new System.Drawing.Font("나눔고딕코딩", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            // 
-            // textBoxFont
-            // 
-            this.textBoxFont.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxFont.Location = new System.Drawing.Point(105, 38);
-            this.textBoxFont.Name = "textBoxFont";
-            this.textBoxFont.ReadOnly = true;
-            this.textBoxFont.Size = new System.Drawing.Size(275, 21);
-            this.textBoxFont.TabIndex = 20;
             // 
             // Preference
             // 
@@ -217,9 +218,9 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownFusekiPort)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownFusekiPort)).EndInit();
             this.ResumeLayout(false);
 
         }
