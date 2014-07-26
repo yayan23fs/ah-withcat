@@ -1,6 +1,6 @@
 ﻿namespace SSWEditor
 {
-    partial class NewForm
+    partial class SingleForm
     {
         /// <summary>
         /// Required designer variable.
