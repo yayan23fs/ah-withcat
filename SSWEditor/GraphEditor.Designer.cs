@@ -28,12 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
             this.textBoxMsg = new System.Windows.Forms.TextBox();
             this.buttonSave = new System.Windows.Forms.Button();
@@ -44,6 +44,10 @@
             this.webBrowserRelfinder = new System.Windows.Forms.WebBrowser();
             this.tabPagePreference = new System.Windows.Forms.TabPage();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPageGraph = new System.Windows.Forms.TabPage();
+            this.textBoxGraphUri = new System.Windows.Forms.TextBox();
+            this.buttonChangeGraphUri = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.tabPageTurtleEditor = new System.Windows.Forms.TabPage();
             this.textBoxTurtleEditor = new SSWEditor.IndentTextBox();
             this.tabPageTableEditor = new System.Windows.Forms.TabPage();
@@ -60,16 +64,13 @@
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tabPageGraph = new System.Windows.Forms.TabPage();
-            this.textBoxGraphUri = new System.Windows.Forms.TextBox();
-            this.buttonChangeGraphUri = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.tabControl3.SuspendLayout();
             this.tabPageTextEditor.SuspendLayout();
             this.tabPageRelFinder.SuspendLayout();
             this.tabPagePreference.SuspendLayout();
             this.tabControl1.SuspendLayout();
+            this.tabPageGraph.SuspendLayout();
             this.tabPageTurtleEditor.SuspendLayout();
             this.tabPageTableEditor.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridTableEditor)).BeginInit();
@@ -80,7 +81,6 @@
             this.splitContainer3.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSPARQL)).BeginInit();
-            this.tabPageGraph.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -201,6 +201,48 @@
             this.tabControl1.Size = new System.Drawing.Size(505, 261);
             this.tabControl1.TabIndex = 3;
             // 
+            // tabPageGraph
+            // 
+            this.tabPageGraph.Controls.Add(this.textBoxGraphUri);
+            this.tabPageGraph.Controls.Add(this.buttonChangeGraphUri);
+            this.tabPageGraph.Controls.Add(this.label1);
+            this.tabPageGraph.Location = new System.Drawing.Point(4, 22);
+            this.tabPageGraph.Name = "tabPageGraph";
+            this.tabPageGraph.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageGraph.Size = new System.Drawing.Size(497, 235);
+            this.tabPageGraph.TabIndex = 0;
+            this.tabPageGraph.Text = "Graph";
+            this.tabPageGraph.UseVisualStyleBackColor = true;
+            // 
+            // textBoxGraphUri
+            // 
+            this.textBoxGraphUri.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxGraphUri.Location = new System.Drawing.Point(73, 25);
+            this.textBoxGraphUri.Name = "textBoxGraphUri";
+            this.textBoxGraphUri.Size = new System.Drawing.Size(324, 21);
+            this.textBoxGraphUri.TabIndex = 1;
+            // 
+            // buttonChangeGraphUri
+            // 
+            this.buttonChangeGraphUri.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonChangeGraphUri.Enabled = false;
+            this.buttonChangeGraphUri.Location = new System.Drawing.Point(403, 23);
+            this.buttonChangeGraphUri.Name = "buttonChangeGraphUri";
+            this.buttonChangeGraphUri.Size = new System.Drawing.Size(75, 23);
+            this.buttonChangeGraphUri.TabIndex = 2;
+            this.buttonChangeGraphUri.Text = "Update";
+            this.buttonChangeGraphUri.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(5, 28);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(62, 12);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Graph URI";
+            // 
             // tabPageTurtleEditor
             // 
             this.tabPageTurtleEditor.Controls.Add(this.textBoxTurtleEditor);
@@ -257,8 +299,8 @@
             // S
             // 
             this.S.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.S.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.S.DefaultCellStyle = dataGridViewCellStyle1;
             this.S.HeaderText = "Subject";
             this.S.Name = "S";
             this.S.Width = 72;
@@ -266,8 +308,8 @@
             // P
             // 
             this.P.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.P.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.P.DefaultCellStyle = dataGridViewCellStyle2;
             this.P.HeaderText = "Predicate";
             this.P.Name = "P";
             this.P.Width = 83;
@@ -275,8 +317,8 @@
             // O
             // 
             this.O.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.O.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.O.DefaultCellStyle = dataGridViewCellStyle3;
             this.O.HeaderText = "Object";
             this.O.Name = "O";
             this.O.Width = 66;
@@ -364,8 +406,8 @@
             // dataGridViewTextBoxColumn1
             // 
             this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle4;
             this.dataGridViewTextBoxColumn1.HeaderText = "Subject";
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             this.dataGridViewTextBoxColumn1.ReadOnly = true;
@@ -374,8 +416,8 @@
             // dataGridViewTextBoxColumn2
             // 
             this.dataGridViewTextBoxColumn2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            dataGridViewCellStyle11.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dataGridViewTextBoxColumn2.DefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dataGridViewTextBoxColumn2.DefaultCellStyle = dataGridViewCellStyle5;
             this.dataGridViewTextBoxColumn2.HeaderText = "Predicate";
             this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
             this.dataGridViewTextBoxColumn2.ReadOnly = true;
@@ -384,54 +426,12 @@
             // dataGridViewTextBoxColumn3
             // 
             this.dataGridViewTextBoxColumn3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            dataGridViewCellStyle12.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dataGridViewTextBoxColumn3.DefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dataGridViewTextBoxColumn3.DefaultCellStyle = dataGridViewCellStyle6;
             this.dataGridViewTextBoxColumn3.HeaderText = "Object";
             this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
             this.dataGridViewTextBoxColumn3.ReadOnly = true;
             this.dataGridViewTextBoxColumn3.Width = 66;
-            // 
-            // tabPageGraph
-            // 
-            this.tabPageGraph.Controls.Add(this.textBoxGraphUri);
-            this.tabPageGraph.Controls.Add(this.buttonChangeGraphUri);
-            this.tabPageGraph.Controls.Add(this.label1);
-            this.tabPageGraph.Location = new System.Drawing.Point(4, 22);
-            this.tabPageGraph.Name = "tabPageGraph";
-            this.tabPageGraph.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageGraph.Size = new System.Drawing.Size(497, 235);
-            this.tabPageGraph.TabIndex = 0;
-            this.tabPageGraph.Text = "Graph";
-            this.tabPageGraph.UseVisualStyleBackColor = true;
-            // 
-            // textBoxGraphUri
-            // 
-            this.textBoxGraphUri.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxGraphUri.Location = new System.Drawing.Point(73, 25);
-            this.textBoxGraphUri.Name = "textBoxGraphUri";
-            this.textBoxGraphUri.Size = new System.Drawing.Size(373, 21);
-            this.textBoxGraphUri.TabIndex = 1;
-            // 
-            // buttonChangeGraphUri
-            // 
-            this.buttonChangeGraphUri.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonChangeGraphUri.Enabled = false;
-            this.buttonChangeGraphUri.Location = new System.Drawing.Point(453, 23);
-            this.buttonChangeGraphUri.Name = "buttonChangeGraphUri";
-            this.buttonChangeGraphUri.Size = new System.Drawing.Size(75, 23);
-            this.buttonChangeGraphUri.TabIndex = 2;
-            this.buttonChangeGraphUri.Text = "Update";
-            this.buttonChangeGraphUri.UseVisualStyleBackColor = true;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(5, 28);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(62, 12);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Graph URI";
             // 
             // GraphEditor
             // 
@@ -448,6 +448,8 @@
             this.tabPageRelFinder.ResumeLayout(false);
             this.tabPagePreference.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
+            this.tabPageGraph.ResumeLayout(false);
+            this.tabPageGraph.PerformLayout();
             this.tabPageTurtleEditor.ResumeLayout(false);
             this.tabPageTableEditor.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridTableEditor)).EndInit();
@@ -458,8 +460,6 @@
             this.splitContainer3.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSPARQL)).EndInit();
-            this.tabPageGraph.ResumeLayout(false);
-            this.tabPageGraph.PerformLayout();
             this.ResumeLayout(false);
 
         }

@@ -125,11 +125,11 @@
     <Compile Include="GraphEditor.Designer.cs">
       <DependentUpon>GraphEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="NewForm.cs">
+    <Compile Include="SingleForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="NewForm.Designer.cs">
-      <DependentUpon>NewForm.cs</DependentUpon>
+    <Compile Include="SingleForm.Designer.cs">
+      <DependentUpon>SingleForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Preference.cs">
       <SubType>Form</SubType>
@@ -159,8 +159,8 @@
     <EmbeddedResource Include="GraphEditor.resx">
       <DependentUpon>GraphEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NewForm.resx">
-      <DependentUpon>NewForm.cs</DependentUpon>
+    <EmbeddedResource Include="SingleForm.resx">
+      <DependentUpon>SingleForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Preference.resx">
       <DependentUpon>Preference.cs</DependentUpon>

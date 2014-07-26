@@ -16,6 +16,7 @@ using VDS.RDF;
 using VDS.RDF.Configuration;
 using VDS.RDF.Parsing;
 using VDS.RDF.Storage;
+using VDS.RDF.Writing;
 
 namespace SSWEditor
 {
@@ -123,7 +124,7 @@ namespace SSWEditor
             else
             {
                 string randomString = Config.GetRandomString(6);
-                NewForm form = new NewForm();
+                SingleForm form = new SingleForm();
                 form.title = "Set unique userid";
                 form.label = "userid";
                 form.content = randomString;
@@ -207,12 +208,7 @@ namespace SSWEditor
             if (listViewGraph.SelectedItems.Count != 1) return;
             string uri = (string)listViewGraph.SelectedItems[0].Tag;
 
-            TabPage tabpage = null;
-            foreach (TabPage page in tabControlGraph.TabPages)
-            {
-                if (page.Text == uri) tabpage = page;
-            }
-
+             TabPage tabpage = GetTabPage(uri);
             if (tabpage == null)
             {
                 tabpage = new TabPage(uri);
@@ -227,6 +223,16 @@ namespace SSWEditor
                 closeGraphToolStripMenuItem.Enabled = true;
             }
             tabControlGraph.SelectedTab = tabpage;
+        }
+
+        private TabPage GetTabPage(string uri)
+        {
+            TabPage tabpage = null;
+            foreach (TabPage page in tabControlGraph.TabPages)
+            {
+                if (page.Text == uri) tabpage = page;
+            }
+            return tabpage;
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -244,7 +250,7 @@ namespace SSWEditor
         {
             try
             {
-                NewForm form = new NewForm();
+                SingleForm form = new SingleForm();
                 form.title = "New Graph";
                 form.label = "URI";
                 form.content = config.GlobalPrefix + Config.GetRandomString(6);
@@ -252,15 +258,9 @@ namespace SSWEditor
                 if (form.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
 
                 string uri = form.content;
-                string label = uri.Split(new char[] {'/', '#'}).Last();
-                string nt = string.Format("<{0}> <{1}> \"{2}\"."
-                    , uri
-                    , "http://www.w3.org/2000/01/rdf-schema#label"
-                    , label);
-
                 Graph g = new Graph();
-                StringParser.Parse(g, nt);
                 g.BaseUri = new Uri(uri);
+                SetNewGraph(g, uri);
                 fuseki.SaveGraph(g);
 
                 UpdateListViewGraph();
@@ -269,6 +269,16 @@ namespace SSWEditor
             {
                 MessageBox.Show("error during creating new graph. " + ex);
             }
+        }
+
+        private void SetNewGraph(Graph g, string uri)
+        {
+            string label = uri.Split(new char[] { '/', '#' }).Last();
+            string nt = string.Format("<{0}> <{1}> \"{2}\"."
+                , uri
+                , "http://www.w3.org/2000/01/rdf-schema#label"
+                , label);
+            StringParser.Parse(g, nt);
         }
 
         private void preferenceToolStripMenuItem_Click(object sender, EventArgs e)
@@ -328,37 +338,7 @@ namespace SSWEditor
             tabControlGraph.TabPages.Clear();
         }
 
-        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (listViewGraph.SelectedItems.Count != 1) return;
-            string graphUri = (string)listViewGraph.SelectedItems[0].Tag;
-
-            if (graphUri == "default")
-            {
-                MessageBox.Show("default(unnamed) graph cannot delete");
-                return;
-            }
-            if (MessageBox.Show(string.Format("are you want to delete {0}", graphUri), "Warning", MessageBoxButtons.YesNo) != DialogResult.Yes) return;
-            fuseki.DeleteGraph(graphUri);
-            UpdateListViewGraph();
-
-            TabPage tabpage = null;
-            foreach (TabPage page in tabControlGraph.TabPages)
-            {
-                if (page.Text == graphUri) tabpage = page;
-            }
-
-            if (tabpage != null)
-            {
-                tabControlGraph.TabPages.Remove(tabpage);
-                if (tabControlGraph.TabPages.Count == 0)
-                {
-                    closeGraphToolStripMenuItem.Enabled = false;
-                }
-            }
-
-        }
-
+       
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
             UpdateListViewGraph();
@@ -377,7 +357,6 @@ namespace SSWEditor
 
         private void importToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("not implemented");
         }
 
         private void exportToolStripMenuItem_Click(object sender, EventArgs e)
@@ -413,6 +392,223 @@ namespace SSWEditor
                 graphEditor.SaveGraph();
             }
             UpdateListViewGraph();
+        }
+
+     
+        private void fromFileToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            if (listViewGraph.SelectedItems.Count != 1)
+            {
+                MessageBox.Show("no graph is selected");
+                return;
+            }
+            string graphUri = (string)listViewGraph.SelectedItems[0].Tag;
+            TabPage tabPage = GetTabPage(graphUri);
+            if (tabPage != null)
+            {
+                GraphEditor graphEditor = (GraphEditor)tabPage.Tag;
+                if (graphEditor.RequestSave())
+                {
+                    if (MessageBox.Show(string.Format("save graph before closing graph {0}", graphEditor.graphUri), "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    {
+                        graphEditor.SaveGraph();
+                    }
+                }
+                tabControlGraph.TabPages.Remove(tabPage);
+            }
+            
+            var dialogResult = openFileDialog1.ShowDialog();
+            if (dialogResult != System.Windows.Forms.DialogResult.OK) return;
+
+            string path = openFileDialog1.FileName;
+            string ext = Path.GetExtension(path).ToLower();
+
+            Graph ng = new Graph();
+            try
+            {
+                if (ext == ".ttl")
+                {
+                    new TurtleParser().Load(ng, path);
+                }
+                else if (ext == ".nt")
+                {
+                    new NTriplesParser().Load(ng, path);
+                }
+                else if (ext == ".rdf")
+                {
+                    FileLoader.Load(ng, path);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Invalid format. "+ex);
+                return;
+            }
+
+            Graph g = new Graph();
+            fuseki.LoadGraph(g, graphUri);
+            int cnt = 0;
+            foreach (var t in ng.Triples)
+            {
+                if (g.Assert(t)) cnt++;
+            }
+            fuseki.SaveGraph(g);
+            MessageBox.Show(string.Format("successfully load {0} triples", cnt)); 
+        }
+
+        private void fromURIToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            if (listViewGraph.SelectedItems.Count != 1)
+            {
+                MessageBox.Show("no graph is selected");
+                return;
+            }
+            string graphUri = (string)listViewGraph.SelectedItems[0].Tag;
+            TabPage tabPage = GetTabPage(graphUri);
+            if (tabPage != null)
+            {
+                GraphEditor graphEditor = (GraphEditor)tabPage.Tag;
+                if (graphEditor.RequestSave())
+                {
+                    if (MessageBox.Show(string.Format("save graph before closing graph {0}", graphEditor.graphUri), "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    {
+                        graphEditor.SaveGraph();
+                    }
+                }
+                tabControlGraph.TabPages.Remove(tabPage);
+            }
+
+            SingleForm form = new SingleForm();
+            form.title = "Set URI";
+            form.label = "URI";
+            if (form.ShowDialog() != DialogResult.OK) return;
+
+            Graph ng = new Graph();
+            try
+            {
+                UriLoader.Load(ng, new Uri(form.content));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Invalid format. " + ex);
+                return;
+            }
+
+            Graph g = new Graph();
+            fuseki.LoadGraph(g, graphUri);
+            int cnt = 0;
+            foreach (var t in ng.Triples)
+            {
+                if ( g.Assert(t) ) cnt++;
+            }
+            fuseki.SaveGraph(g);
+            MessageBox.Show(string.Format("successfully insert {0} triples", cnt)); 
+        }
+
+        private void exportToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (listViewGraph.SelectedItems.Count != 1)
+            {
+                MessageBox.Show("no graph is selected");
+                return;
+            }
+            string graphUri = (string)listViewGraph.SelectedItems[0].Tag;
+
+
+            var dialogResult = saveFileDialog1.ShowDialog();
+            if (dialogResult != System.Windows.Forms.DialogResult.OK) return;
+
+            string path = saveFileDialog1.FileName;
+            string ext = Path.GetExtension(path).ToLower();
+
+            Graph g = new Graph();
+            fuseki.LoadGraph(g, graphUri); 
+            try
+            {
+                if (ext == ".ttl")
+                {
+                    new CompressingTurtleWriter().Save(g, path);
+                }
+                else if (ext == ".nt")
+                {
+                    new NTriplesWriter().Save(g, path);
+                }
+                else if (ext == ".rdf")
+                {
+                    new RdfXmlWriter().Save(g, path);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Invalid format. " + ex);
+                return;
+            }
+            MessageBox.Show(string.Format("successfully export {0} triples", g.Triples.Count)); 
+        }
+
+        private void truncateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listViewGraph.SelectedItems.Count != 1)
+            {
+                MessageBox.Show("no graph is selected");
+                return;
+            }
+            string graphUri = (string)listViewGraph.SelectedItems[0].Tag;
+            if (MessageBox.Show(string.Format("are you want to truncate {0}", graphUri), "Warning", MessageBoxButtons.YesNo) != DialogResult.Yes) return;
+
+            TabPage tabPage = GetTabPage(graphUri);
+            if (tabPage != null)
+            {
+                tabControlGraph.TabPages.Remove(tabPage);
+            }
+
+            Graph g = new Graph();
+            fuseki.LoadGraph(g, graphUri);
+            g.Clear();
+            SetNewGraph(g, graphUri);
+            fuseki.SaveGraph(g);
+        }
+
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listViewGraph.SelectedItems.Count != 1)
+            {
+                MessageBox.Show("no graph is selected");
+                return;
+            } 
+
+            string graphUri = (string)listViewGraph.SelectedItems[0].Tag;
+            if (graphUri == "default")
+            {
+                MessageBox.Show("default(unnamed) graph cannot delete");
+                return;
+            }
+            if (MessageBox.Show(string.Format("are you want to delete {0}", graphUri), "Warning", MessageBoxButtons.YesNo) != DialogResult.Yes) return;
+
+            TabPage tabPage = GetTabPage(graphUri);
+            if (tabPage != null)
+            {
+                tabControlGraph.TabPages.Remove(tabPage);
+            }
+
+            fuseki.DeleteGraph(graphUri);
+            UpdateListViewGraph();
+
+            TabPage tabpage = null;
+            foreach (TabPage page in tabControlGraph.TabPages)
+            {
+                if (page.Text == graphUri) tabpage = page;
+            }
+
+            if (tabpage != null)
+            {
+                tabControlGraph.TabPages.Remove(tabpage);
+                if (tabControlGraph.TabPages.Count == 0)
+                {
+                    closeGraphToolStripMenuItem.Enabled = false;
+                }
+            }
+
         }
 
     }

@@ -10,13 +10,13 @@ using System.Windows.Forms;
 
 namespace SSWEditor
 {
-    public partial class NewForm : Form
+    public partial class SingleForm : Form
     {
         public string title;
         public string label;
         public string content;
 
-        public NewForm()
+        public SingleForm()
         {
             InitializeComponent();
         }
