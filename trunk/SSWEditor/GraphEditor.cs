@@ -213,24 +213,24 @@ namespace SSWEditor
                     string currUri = "", currLabel = "";
                     if (obj[0] == '#')
                     {
-                        currUri = string.Format("{0}s#{1}", MainForm.config.GlobalPrefix, obj.Substring(1).Trim());
-                        currLabel = obj.Substring(1);
+                        currUri = string.Format("{0}s#{1}", MainForm.config.GlobalPrefix, obj.Substring(1).Replace(" ", ""));
+                        currLabel = obj.Substring(1).Trim();
                     }
                     else
                     {
                         Uri tryUri;
-                        if (Uri.TryCreate(obj, UriKind.Absolute, out tryUri))
+                        if (Uri.TryCreate(obj.Replace(" ", ""), UriKind.Absolute, out tryUri))
                         {
                             currUri = tryUri.ToString();
-                            currLabel = currUri;
+                            currLabel = currUri.Trim();
                         }
                         else
                         {
-                            string objUri = obj;
+                            string objUri = obj.Replace(" ", "");
                             if (objUri.Length > 64) objUri = objUri.Substring(0, 64);
                             objUri = Uri.EscapeUriString(obj);
                             currUri = string.Format("{0}/s#{1}", graphUri, objUri);
-                            currLabel = obj;
+                            currLabel = obj.Trim();
                         }
                     }
 

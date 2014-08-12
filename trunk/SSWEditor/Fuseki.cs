@@ -24,7 +24,7 @@ namespace SSWEditor
 
             var processInfo = new ProcessStartInfo("java.exe", string.Join(" ", arguments))
                                   {
-                                      CreateNoWindow = true,
+                                      CreateNoWindow = false,
                                       UseShellExecute = showFusekiConsole
                                   };
             Process proc = Process.Start(processInfo);
