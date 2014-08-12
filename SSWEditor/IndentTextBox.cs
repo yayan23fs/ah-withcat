@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,22 +8,11 @@ using System.Windows.Forms;
 
 namespace SSWEditor
 {
-    public static class StringExtensions
-    {
-        public static string ReduceIndent(this string line, int level)
-        {
-            var unindentedChars = line.SkipWhile((c, index) => char.IsWhiteSpace(c) && index < level);
-            return new string(unindentedChars.ToArray());
-        }
-
-        public static string IncreaseIndent(this string line, int level)
-        {
-            return new string(' ', level) + line;
-        }
-    }
-
     public class IndentTextBox : RichTextBox
     {
+        private List<string> autoCompleteList = new List<string>() {"aaa", "bbb"};
+        private ListBox autoCompleteBox = new ListBox();
+
         bool isShift = false;
         protected override void OnKeyDown(KeyEventArgs e)
         {
@@ -38,7 +28,20 @@ namespace SSWEditor
 
         protected override void OnKeyPress(KeyPressEventArgs e)
         {
-            if (e.KeyChar == (char)Keys.Return)
+            if (e.KeyChar == '@')
+            {
+                //autoCompleteBox.Parent = this;
+                //Point cursorPt = Cursor.Position;
+                //autoCompleteBox.Location = PointToClient(cursorPt);
+                //autoCompleteBox.Items.Clear();
+                //foreach (String s in autoCompleteList)
+                //{
+                //    autoCompleteBox.Items.Add(s);
+                //}
+                //autoCompleteBox.Show();
+                //autoCompleteBox.Visible = true;
+            } 
+            else if (e.KeyChar == (char)Keys.Return)
             {
                 e.Handled = true;
 
@@ -95,4 +98,18 @@ namespace SSWEditor
             base.OnKeyPress(e);
         }
     }
+    public static class StringExtensions
+    {
+        public static string ReduceIndent(this string line, int level)
+        {
+            var unindentedChars = line.SkipWhile((c, index) => char.IsWhiteSpace(c) && index < level);
+            return new string(unindentedChars.ToArray());
+        }
+
+        public static string IncreaseIndent(this string line, int level)
+        {
+            return new string(' ', level) + line;
+        }
+    }
+
 }

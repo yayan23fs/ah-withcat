@@ -26,6 +26,7 @@ namespace SSWEditor
     public partial class GraphEditor : UserControl
     {
         public string graphUri;
+        public string graphLabel;
         public string graphBase64;
         public Graph g = new Graph();
 
@@ -54,6 +55,8 @@ namespace SSWEditor
                 loadUri = uri;
                 graphUri = uri;
             }
+            graphLabel = graphUri.Split(new char[] { '/', '#' }).Last();
+
             MainForm.fuseki.LoadGraph(g, loadUri);
             graphBase64 = Base64Encode(uri);
 
@@ -175,7 +178,11 @@ namespace SSWEditor
             try
             {
                 g.Clear();
-                var lines = textBoxTextEditor.Text.Split(new char[] { '\n' }).ToList();
+
+                IUriNode nLabel = g.CreateUriNode(UriFactory.Create("http://www.w3.org/2000/01/rdf-schema#label"));
+                g.Assert(new Triple(g.CreateUriNode(UriFactory.Create(graphUri)), nLabel, g.CreateLiteralNode(graphLabel)));
+                
+                var lines = textBoxTextEditor.Text.Replace("\t", new string(' ', 4)).Split(new char[] { '\n' }).ToList();
 
                 var nlines = new List<string>();
                 foreach (var line in lines)
@@ -187,19 +194,19 @@ namespace SSWEditor
                     {
                         tab = lSpaceMatch.Length / 4;
                     }
+                    obj = obj.TrimStart();
+                    if (obj == "") continue;
 
-                    nlines.Add(obj);
+                    nlines.Add(line);
                     MatchCollection linkMatches = Regex.Matches(obj, @"\[(.+?)\]");
                     foreach (Match match in linkMatches)
                     {
                         nlines.Add(new string(' ', (tab+1)*4)+match.Groups[1].Value);
                     }
                 }
-
-
-                IUriNode nLabel = g.CreateUriNode(UriFactory.Create("http://www.w3.org/2000/01/rdf-schema#label"));
-                List<string> parentList = new List<string>();
-                parentList.Add(graphUri);
+                
+                List<string> pList = new List<string>();
+                List<string> sList = new List<string>();
                 foreach (string line in nlines)
                 {
                     string obj = line.TrimEnd();
@@ -209,25 +216,51 @@ namespace SSWEditor
                     {
                         tab = lSpaceMatch.Length / 4;
                     }
-                    obj = obj.TrimStart();
-                    if (obj == "") continue;
+
+                    for (int i = pList.Count()-1; i > tab; i--)
+                    {
+                        pList.RemoveAt(i);
+                    }
+                    for (int i = pList.Count()-1; i < tab; i++)
+                    {
+                        pList.Add("");
+                    }
+
+                    for (int i = sList.Count() - 1; i > tab; i--)
+                    {
+                        sList.RemoveAt(i);
+                    }
+                    for (int i = sList.Count() - 1; i < tab; i++)
+                    {
+                        sList.Add("");
+                    }
 
                     char[] objChars = obj.ToCharArray();
-                    List<string> predicateList = new List<string>();
-                    MatchCollection rPredicateMatches = Regex.Matches(obj, @"\@(.+?\b)");
-                    foreach (Match rPredicateMatch in rPredicateMatches)
+                    Match rPredicateMatch = Regex.Match(obj, @"\@(.+?\b)");
+                    string predicate = "";
+                    if (rPredicateMatch.Success)
                     {
                         for (int i = rPredicateMatch.Index; i < rPredicateMatch.Index + rPredicateMatch.Length; i++)
                         {
                             objChars[i] = ' ';
                         }
-                        predicateList.Add(string.Format("{0}p#{1}", MainForm.config.GlobalPrefix, rPredicateMatch.Value.Substring(1)));
+                        predicate = string.Format("{0}p#{1}", MainForm.config.GlobalPrefix, rPredicateMatch.Value.Substring(1));
                     }
                     obj = string.Join("", objChars).Trim();
-
-                    if (predicateList.Count == 0)
+                    
+                    if (obj == "")
                     {
-                        predicateList.Add("http://rdfs.org/sioc/ns#container_of");
+                        if ( predicate != "" ) pList[tab] = predicate;
+                        continue;
+                    }
+
+                    for (int i = pList.Count - 1; i >= 0 && predicate == "" ; i--)
+                    {
+                        predicate = pList[i];
+                    }
+                    if (predicate == "")
+                    {
+                        predicate = "http://rdfs.org/sioc/ns#container_of";
                     }
 
                     string currUri = "", currLabel = "";
@@ -253,24 +286,30 @@ namespace SSWEditor
                             currLabel = obj.Trim();
                         }
                     }
+                    sList[sList.Count-1] = currUri;
 
-                    while (parentList.Count >= tab + 2)
+                    string prevUri = "";
+                    for (int i = sList.Count - 2; i >= 0 && prevUri == ""; i--)
                     {
-                        parentList.RemoveAt(parentList.Count - 1);
+                        prevUri = sList[i];
                     }
-                    string parentUri = parentList.Last();
 
-                    foreach (string predicateUri in predicateList)
+                    if (prevUri != "")
                     {
-                        IUriNode nS = g.CreateUriNode(UriFactory.Create(parentUri));
-                        IUriNode nP = g.CreateUriNode(UriFactory.Create(predicateUri));
+                        IUriNode nS = g.CreateUriNode(UriFactory.Create(prevUri));
+                        IUriNode nP = g.CreateUriNode(UriFactory.Create(predicate));
                         IUriNode nO = g.CreateUriNode(UriFactory.Create(currUri));
                         g.Assert(new Triple(nS, nP, nO));
 
                         ILiteralNode nLabelVal = g.CreateLiteralNode(currLabel);
                         g.Assert(new Triple(nO, nLabel, nLabelVal));
                     }
-                    parentList.Add(currUri);
+                    else
+                    {
+                        IUriNode nO = g.CreateUriNode(UriFactory.Create(currUri));
+                        ILiteralNode nLabelVal = g.CreateLiteralNode(currLabel);
+                        g.Assert(new Triple(nO, nLabel, nLabelVal));
+                    }
                 }
                 ReportMsg("");
             }
