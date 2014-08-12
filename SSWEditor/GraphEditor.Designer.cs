@@ -39,7 +39,6 @@
             this.buttonSave = new System.Windows.Forms.Button();
             this.tabControl3 = new System.Windows.Forms.TabControl();
             this.tabPageTextEditor = new System.Windows.Forms.TabPage();
-            this.textBoxTextEditor = new SSWEditor.IndentTextBox();
             this.tabPageRelFinder = new System.Windows.Forms.TabPage();
             this.webBrowserRelfinder = new System.Windows.Forms.WebBrowser();
             this.tabPagePreference = new System.Windows.Forms.TabPage();
@@ -49,7 +48,6 @@
             this.buttonChangeGraphUri = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.tabPageTurtleEditor = new System.Windows.Forms.TabPage();
-            this.textBoxTurtleEditor = new SSWEditor.IndentTextBox();
             this.tabPageTableEditor = new System.Windows.Forms.TabPage();
             this.dataGridTableEditor = new System.Windows.Forms.DataGridView();
             this.S = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -57,13 +55,15 @@
             this.O = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPageSPARQL = new System.Windows.Forms.TabPage();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
-            this.textBoxQuery = new SSWEditor.IndentTextBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.buttonQuery = new System.Windows.Forms.Button();
             this.dataGridViewSPARQL = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.textBoxTextEditor = new SSWEditor.IndentTextBox();
+            this.textBoxTurtleEditor = new SSWEditor.IndentTextBox();
+            this.textBoxQuery = new SSWEditor.IndentTextBox();
             this.panel1.SuspendLayout();
             this.tabControl3.SuspendLayout();
             this.tabPageTextEditor.SuspendLayout();
@@ -138,23 +138,8 @@
             this.tabPageTextEditor.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageTextEditor.Size = new System.Drawing.Size(511, 267);
             this.tabPageTextEditor.TabIndex = 1;
-            this.tabPageTextEditor.Text = "Text Editor";
+            this.tabPageTextEditor.Text = "Simple Text Editor";
             this.tabPageTextEditor.UseVisualStyleBackColor = true;
-            // 
-            // textBoxTextEditor
-            // 
-            this.textBoxTextEditor.AcceptsTab = true;
-            this.textBoxTextEditor.BackColor = System.Drawing.SystemColors.Control;
-            this.textBoxTextEditor.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBoxTextEditor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxTextEditor.Font = new System.Drawing.Font("나눔고딕코딩", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.textBoxTextEditor.Location = new System.Drawing.Point(3, 3);
-            this.textBoxTextEditor.Name = "textBoxTextEditor";
-            this.textBoxTextEditor.Size = new System.Drawing.Size(505, 261);
-            this.textBoxTextEditor.TabIndex = 1;
-            this.textBoxTextEditor.Text = "";
-            this.textBoxTextEditor.WordWrap = false;
-            this.textBoxTextEditor.TextChanged += new System.EventHandler(this.textBoxTextEditor_TextChanged);
             // 
             // tabPageRelFinder
             // 
@@ -254,21 +239,6 @@
             this.tabPageTurtleEditor.Text = "Turtle Editor (sync)";
             this.tabPageTurtleEditor.UseVisualStyleBackColor = true;
             // 
-            // textBoxTurtleEditor
-            // 
-            this.textBoxTurtleEditor.AcceptsTab = true;
-            this.textBoxTurtleEditor.BackColor = System.Drawing.SystemColors.Control;
-            this.textBoxTurtleEditor.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBoxTurtleEditor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxTurtleEditor.Font = new System.Drawing.Font("나눔고딕코딩", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.textBoxTurtleEditor.Location = new System.Drawing.Point(3, 3);
-            this.textBoxTurtleEditor.Name = "textBoxTurtleEditor";
-            this.textBoxTurtleEditor.Size = new System.Drawing.Size(491, 229);
-            this.textBoxTurtleEditor.TabIndex = 2;
-            this.textBoxTurtleEditor.Text = "";
-            this.textBoxTurtleEditor.WordWrap = false;
-            this.textBoxTurtleEditor.TextChanged += new System.EventHandler(this.textBoxTurtleEditor_TextChanged);
-            // 
             // tabPageTableEditor
             // 
             this.tabPageTableEditor.Controls.Add(this.dataGridTableEditor);
@@ -353,20 +323,6 @@
             this.splitContainer3.SplitterDistance = 107;
             this.splitContainer3.TabIndex = 0;
             // 
-            // textBoxQuery
-            // 
-            this.textBoxQuery.AcceptsTab = true;
-            this.textBoxQuery.BackColor = System.Drawing.SystemColors.Control;
-            this.textBoxQuery.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBoxQuery.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxQuery.Font = new System.Drawing.Font("나눔고딕코딩", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.textBoxQuery.Location = new System.Drawing.Point(0, 0);
-            this.textBoxQuery.Name = "textBoxQuery";
-            this.textBoxQuery.Size = new System.Drawing.Size(491, 84);
-            this.textBoxQuery.TabIndex = 2;
-            this.textBoxQuery.Text = "SELECT * WHERE {?s ?p ?o} LIMIT 10";
-            this.textBoxQuery.WordWrap = false;
-            // 
             // panel2
             // 
             this.panel2.Controls.Add(this.buttonQuery);
@@ -432,6 +388,50 @@
             this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
             this.dataGridViewTextBoxColumn3.ReadOnly = true;
             this.dataGridViewTextBoxColumn3.Width = 66;
+            // 
+            // textBoxTextEditor
+            // 
+            this.textBoxTextEditor.AcceptsTab = true;
+            this.textBoxTextEditor.BackColor = System.Drawing.SystemColors.Control;
+            this.textBoxTextEditor.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBoxTextEditor.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBoxTextEditor.Font = new System.Drawing.Font("나눔고딕코딩", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.textBoxTextEditor.Location = new System.Drawing.Point(3, 3);
+            this.textBoxTextEditor.Name = "textBoxTextEditor";
+            this.textBoxTextEditor.Size = new System.Drawing.Size(505, 261);
+            this.textBoxTextEditor.TabIndex = 1;
+            this.textBoxTextEditor.Text = "";
+            this.textBoxTextEditor.WordWrap = false;
+            this.textBoxTextEditor.TextChanged += new System.EventHandler(this.textBoxTextEditor_TextChanged);
+            // 
+            // textBoxTurtleEditor
+            // 
+            this.textBoxTurtleEditor.AcceptsTab = true;
+            this.textBoxTurtleEditor.BackColor = System.Drawing.SystemColors.Control;
+            this.textBoxTurtleEditor.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBoxTurtleEditor.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBoxTurtleEditor.Font = new System.Drawing.Font("나눔고딕코딩", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.textBoxTurtleEditor.Location = new System.Drawing.Point(3, 3);
+            this.textBoxTurtleEditor.Name = "textBoxTurtleEditor";
+            this.textBoxTurtleEditor.Size = new System.Drawing.Size(491, 229);
+            this.textBoxTurtleEditor.TabIndex = 2;
+            this.textBoxTurtleEditor.Text = "";
+            this.textBoxTurtleEditor.WordWrap = false;
+            this.textBoxTurtleEditor.TextChanged += new System.EventHandler(this.textBoxTurtleEditor_TextChanged);
+            // 
+            // textBoxQuery
+            // 
+            this.textBoxQuery.AcceptsTab = true;
+            this.textBoxQuery.BackColor = System.Drawing.SystemColors.Control;
+            this.textBoxQuery.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBoxQuery.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBoxQuery.Font = new System.Drawing.Font("나눔고딕코딩", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.textBoxQuery.Location = new System.Drawing.Point(0, 0);
+            this.textBoxQuery.Name = "textBoxQuery";
+            this.textBoxQuery.Size = new System.Drawing.Size(491, 84);
+            this.textBoxQuery.TabIndex = 2;
+            this.textBoxQuery.Text = "SELECT * WHERE {?s ?p ?o} LIMIT 10";
+            this.textBoxQuery.WordWrap = false;
             // 
             // GraphEditor
             // 
