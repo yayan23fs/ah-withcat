@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Deployment.Application;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -48,6 +49,18 @@ namespace SSWEditor
 
             LoadConfig();
 
+            string installPath = GetJavaInstallationPath();
+            string javaPath = System.IO.Path.Combine(installPath, "bin\\Java.exe");
+            if (!System.IO.File.Exists(javaPath))
+            {
+                if (MessageBox.Show(string.Format("Java is not installted. Do you install java?")
+                    , "Infomation", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
+                {
+                    Process.Start("http://www.oracle.com/technetwork/java/javase/downloads/index.html");
+                }
+                Application.Exit();
+            }
+
 
             try
             {
@@ -75,6 +88,26 @@ namespace SSWEditor
             }
             UpdateListViewGraph();
         }
+
+        public static string GetJavaInstallationPath()
+        {
+            string environmentPath = Environment.GetEnvironmentVariable("JAVA_HOME");
+            if (!string.IsNullOrEmpty(environmentPath))
+            {
+                return environmentPath;
+            }
+
+            string javaKey = "SOFTWARE\\JavaSoft\\Java Runtime Environment\\";
+            using (Microsoft.Win32.RegistryKey rk = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(javaKey))
+            {
+                string currentVersion = rk.GetValue("CurrentVersion").ToString();
+                using (Microsoft.Win32.RegistryKey key = rk.OpenSubKey(currentVersion))
+                {
+                    return key.GetValue("JavaHome").ToString();
+                }
+            }
+        }
+
 
         public static string currVersion = "offline";
         public static void UpdateApplication(bool force=false)

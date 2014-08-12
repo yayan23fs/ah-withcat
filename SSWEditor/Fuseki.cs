@@ -22,9 +22,12 @@ namespace SSWEditor
             arguments.Add("--loc \"" + MainForm.documentRoot + "\"");
             arguments.Add("/ds");
 
-            var processInfo = new ProcessStartInfo("java.exe", string.Join(" ", arguments))
+            string installPath = MainForm.GetJavaInstallationPath();
+            string javaPath = System.IO.Path.Combine(installPath, "bin\\Java.exe");
+
+            var processInfo = new ProcessStartInfo(javaPath, string.Join(" ", arguments))
                                   {
-                                      CreateNoWindow = false,
+                                      CreateNoWindow = true,
                                       UseShellExecute = showFusekiConsole
                                   };
             Process proc = Process.Start(processInfo);

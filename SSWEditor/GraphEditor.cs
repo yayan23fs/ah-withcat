@@ -175,12 +175,32 @@ namespace SSWEditor
             try
             {
                 g.Clear();
-                string[] lines = textBoxTextEditor.Text.Split(new char[] { '\n' });
+                var lines = textBoxTextEditor.Text.Split(new char[] { '\n' }).ToList();
+
+                var nlines = new List<string>();
+                foreach (var line in lines)
+                {
+                    string obj = line.TrimEnd();
+                    int tab = 0;
+                    Match lSpaceMatch = Regex.Match(obj, @"^[\s]+");
+                    if (lSpaceMatch.Success)
+                    {
+                        tab = lSpaceMatch.Length / 4;
+                    }
+
+                    nlines.Add(obj);
+                    MatchCollection linkMatches = Regex.Matches(obj, @"\[(.+?)\]");
+                    foreach (Match match in linkMatches)
+                    {
+                        nlines.Add(new string(' ', (tab+1)*4)+match.Groups[1].Value);
+                    }
+                }
+
 
                 IUriNode nLabel = g.CreateUriNode(UriFactory.Create("http://www.w3.org/2000/01/rdf-schema#label"));
                 List<string> parentList = new List<string>();
                 parentList.Add(graphUri);
-                foreach (string line in lines)
+                foreach (string line in nlines)
                 {
                     string obj = line.TrimEnd();
                     int tab = 0;
@@ -194,8 +214,8 @@ namespace SSWEditor
 
                     char[] objChars = obj.ToCharArray();
                     List<string> predicateList = new List<string>();
-                    MatchCollection rPredicateMatchs = Regex.Matches(obj, @"\@(.+?\b)");
-                    foreach (Match rPredicateMatch in rPredicateMatchs)
+                    MatchCollection rPredicateMatches = Regex.Matches(obj, @"\@(.+?\b)");
+                    foreach (Match rPredicateMatch in rPredicateMatches)
                     {
                         for (int i = rPredicateMatch.Index; i < rPredicateMatch.Index + rPredicateMatch.Length; i++)
                         {
